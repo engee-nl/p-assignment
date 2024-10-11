@@ -3,6 +3,7 @@ from sqlalchemy import Column, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
+from app.config import logger
 import os
 
 # Fetch DATABASE_URL from environment, fallback to SQLite for local testing
@@ -27,4 +28,7 @@ class Image(Base):
 
 # Initialize the database
 def init_db():
+    '''
     Base.metadata.create_all(bind=engine)
+    '''
+    logger.error(f"to do : connect to DB")
