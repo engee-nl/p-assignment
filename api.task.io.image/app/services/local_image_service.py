@@ -3,7 +3,6 @@ import hashlib
 from app.config import logger  # Import logger
 from PIL import Image
 from fastapi import UploadFile, HTTPException
-from fastapi.responses import FileResponse
 import json
 import aiofiles
 from typing import List
@@ -181,7 +180,7 @@ async def get_image(md5key: str):
             raise HTTPException(status_code=404, detail="Image file not found")
         
         # Return the file as a response
-        return FileResponse(image_path)
+        return image_path
 
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
