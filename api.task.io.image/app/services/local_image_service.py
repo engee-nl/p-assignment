@@ -16,8 +16,15 @@ def save_image_list_to_json(image_list: List[dict]):
 def load_image_list_from_json() -> List[dict]:
     if not os.path.exists(JSON_FILE):
         return []
-    with open(JSON_FILE, 'r') as f:
-        return json.load(f)
+    try:
+        with open(JSON_FILE, 'r') as f:
+            content = f.read().strip()  # Strip any extra whitespace or newlines
+            if not content:  # If file is empty, return an empty list
+                return []
+            return json.loads(content)
+    except json.JSONDecodeError:
+        # If the file is not valid JSON, return an empty list
+        return []
 
 def calculate_md5(file: UploadFile) -> str:
     hash_md5 = hashlib.md5()
