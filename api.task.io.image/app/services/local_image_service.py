@@ -170,13 +170,16 @@ async def get_image(md5key: str):
         
         # Check if the image info exists
         if image_data is None:
+            logger.error(f"Image not found")
             raise HTTPException(status_code=404, detail="Image not found")
 
         # Retrieve the file path from the image info
         image_path = image_data['compressed_path']
+        logger.info(f"Image path : {image_path}")
 
         # Check if the file exists
         if not Path(image_path).exists():
+            logger.error(f"Image file not found")
             raise HTTPException(status_code=404, detail="Image file not found")
         
         # Return the file as a response
