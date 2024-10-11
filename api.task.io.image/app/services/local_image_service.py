@@ -104,8 +104,8 @@ async def process_and_save_image(file: UploadFile):
     image_info = {
         "filename": file.filename,
         "md5": file_md5,
-        "original_location": original_file_location,
-        "resized_location": resized_file_location
+        "original_path": original_file_location,
+        "compressed_path": resized_file_location
     }
 
     # Append new image info
@@ -116,8 +116,8 @@ async def process_and_save_image(file: UploadFile):
     return {
         "filename": file.filename,
         "md5": file_md5,
-        "original_location": original_file_location,
-        "resized_location": resized_file_location
+        "original_path": original_file_location,
+        "compressed_path": resized_file_location
     }
 
 def get_all_images() -> List[dict]:
