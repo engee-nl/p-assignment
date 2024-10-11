@@ -3,6 +3,7 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { uploadImage, getImages, deleteImage, updateImage } from './controllers/imageController';
 import Image from 'next/image';
+import axios from 'axios';
 
 // Define the types for images and API response
 interface Image {
@@ -59,17 +60,22 @@ export default function Home() {
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
-    } catch (err:any) {
-      console.error('Error uploading image:', err);
+    } catch (err:unknown) {
+      // Type guard to determine if error is an Axios error
+      if (axios.isAxiosError(err)) {
+        const errorMessage = err.response?.data?.detail || 'Upload failed';
+        const errorCode = err.response?.status || 'Unknown error';
 
-      // Handle upload error
-      const errorMessage = err.response?.data?.detail || 'Upload failed';
-      const errorCode = err.response?.status || 'Unknown error';
-  
-      setNotification({
-        message: errorMessage,
-        errorCode: errorCode.toString(),
-      });
+        setNotification({
+          message: errorMessage,
+          errorCode: errorCode.toString(),
+        });
+      } else {
+        // Handle unexpected error types
+        setNotification({
+          message: 'An unexpected error occurred',
+        });
+      }
     } finally {
       setLoading(false);  // End loading
     }
