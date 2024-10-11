@@ -73,6 +73,7 @@ export default function Home() {
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
     } catch (err: unknown) {
+      console.error('Error handleUpload:', err);
       
       // Use type assertion to cast the unknown error to CustomError
       const customError = err as CustomError;
@@ -230,7 +231,7 @@ export default function Home() {
         <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
           <div className="relative bg-white rounded-lg p-6">
             <button
-              className="absolute top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none shadow-lg transform translate-x-2 -translate-y-2 transition-all duration-200"
+              className="absolute top-[-14px] right-[-14px] text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none shadow-lg transform translate-x-2 -translate-y-2 transition-all duration-200"
               onClick={closeModal}
               aria-label="Close modal"
             >
