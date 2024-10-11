@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, ChangeEvent } from 'react';
-import { uploadImage, getImages, deleteImage, updateImage } from './services/imageService';
+import { uploadImage, getImages, deleteImage, updateImage } from './controllers/imageController';
 import Image from 'next/image';
 
 // Define the types for images and API response
@@ -18,6 +18,7 @@ export default function Home() {
   const [loading, setLoading] = useState<boolean>(false);             // To manage loading 
   const [showModal, setShowModal] = useState<boolean>(false);         // Modal visibility
   const [modalImage, setModalImage] = useState<string | null>(null);  // For the image shown in the modal
+  const [notification, setNotification] = useState<{ message: string; errorCode?: string } | null>(null);
 
   useEffect(() => {
     const fetchImages = async () => {
@@ -54,11 +55,21 @@ export default function Home() {
       });
       const response = await getImages();
       setImages(response.data);
-      setUploadProgress(0);  // Reset progress after completion
+      setUploadProgress(0);   // Reset progress after completion
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
+      setNotification(null);  // Clear any previous notification
     } catch (err) {
       console.error('Error uploading image:', err);
+
+      // Handle upload error
+      const errorMessage = err.response?.data?.detail || 'Upload failed';
+      const errorCode = err.response?.status || 'Unknown error';
+  
+      setNotification({
+        message: errorMessage,
+        errorCode: errorCode.toString(),
+      });
     } finally {
       setLoading(false);  // End loading
     }
@@ -97,6 +108,13 @@ export default function Home() {
     setShowModal(false);         // Hide the modal
     setModalImage(null);         // Clear the modal image
   };
+
+  const Notification = ({ message, errorCode }: { message: string; errorCode?: string }) => (
+    <div className="fixed top-4 right-4 bg-red-500 text-white p-4 rounded shadow-lg z-50">
+      <p>{message}</p>
+      {errorCode && <p>Error Code: {errorCode}</p>}
+    </div>
+  );
 
   return (
     <div className="max-w-4xl mx-auto p-6">
@@ -191,20 +209,19 @@ export default function Home() {
     {showModal && (
       <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
         <div className="relative bg-white rounded-lg p-6">
-          {/* Improved Close Button */}
           <button
-            className="absolute top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none"
+            className="absolute top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none shadow-lg transform translate-x-2 -translate-y-2 transition-all duration-200"
             onClick={closeModal}
             aria-label="Close modal"
           >
-            <span className="text-2xl font-bold">&times;</span> {/* Using a larger × symbol */}
+            <span className="text-2xl font-bold">&times;</span>
           </button>
           {modalImage && (
             <Image
               src={modalImage}
               alt="Original Image"
-              width={800} // Set width for modal image
-              height={800} // Set height for modal image
+              width={800} 
+              height={800} 
               className="w-full h-auto max-h-screen object-contain"
             />
           )}
