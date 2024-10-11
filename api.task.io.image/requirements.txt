@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+pillow  # for image processing
+boto3   # for AWS S3 interaction
+sqlalchemy  # for database ORM
+pymysql
+pydantic
+python-dotenv  # for reading environment variables
