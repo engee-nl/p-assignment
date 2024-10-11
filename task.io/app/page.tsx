@@ -78,7 +78,7 @@ export default function Home() {
       // Use type assertion to cast the unknown error to CustomError
       const customError = err as CustomError;
 
-      const errorMessage = customError.response?.data?.detail || 'Upload failed'; // Accessing the message
+      const errorMessage = JSON.stringify(err) || 'Upload failed'; // Accessing the message
       const errorCode = customError.response?.status || 'Unknown error'; // Accessing the status code
 
       setNotification({
