@@ -6,6 +6,7 @@ import json
 import aiofiles
 from typing import List
 from pathlib import Path
+from app.config import logger  # Import logger
 
 UPLOAD_FOLDER = "uploaded_images"
 JSON_FILE = "image_list.json"
