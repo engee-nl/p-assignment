@@ -28,6 +28,9 @@ export default function Home() {
   const [modalImage, setModalImage] = useState<string>("");           // For the image shown in the modal
   const [notification, setNotification] = useState<{ message: string; errorCode?: string } | null>(null);
 
+  const [width, setWidth] = useState<number>(0);
+  const [height, setHeight] = useState<number>(0);
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -186,7 +189,7 @@ export default function Home() {
               Delete
             </button>
 
-            <div className="h-[10px] bg-white-500"></div>
+            <div className="h-[14px] bg-white-500"></div>
 
             <button
               className="bg-blue-500 text-white rounded-md w-full px-4 py-2 hover:bg-blue-600"
@@ -195,18 +198,30 @@ export default function Home() {
               View Original
             </button>
 
-            <div className="h-[10px] bg-white-500"></div>
+            <div className="h-[14px] bg-white-500"></div>
             
-            <input
-              type="file"
-              onChange={handleImageSelect}
-              className="block w-full mb-2 p-2 border border-gray-300 rounded-md"
-            />
+            <div className="flex space-x-2">
+              <input
+                type="number"
+                placeholder="Width"
+                value={width}
+                onChange={(e) => setWidth(Number(e.target.value))}
+                className="border rounded p-2"
+              />
+              <input
+                type="number"
+                placeholder="Height"
+                value={height}
+                onChange={(e) => setHeight(Number(e.target.value))}
+                className="border rounded p-2"
+              />
+            </div>
+
             <button
-              className="bg-green-500 text-white rounded-md w-full px-4 py-2 hover:bg-green-600"
-              onClick={() => handleUpdate(image.md5)}
+              onClick={handleUpdate}
+              className="mt-2 bg-blue-500 text-white rounded p-2 w-full"
             >
-              Update
+              Update Dimension
             </button>
             
           </div>
