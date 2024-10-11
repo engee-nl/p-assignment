@@ -16,7 +16,8 @@ export const uploadImage = (formData: FormData, onUploadProgress: (progressEvent
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve(JSON.parse(xhr.responseText));
       } else {
-        reject(new Error('Failed to upload image'));
+        reject(JSON.parse(xhr.responseText))
+        //reject(new Error('Failed to upload image'));
       }
     };
 
