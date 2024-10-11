@@ -112,11 +112,13 @@ async def process_and_save_image(file: UploadFile):
         raise HTTPException(status_code=500, detail=f"Error resizing or converting the image: {e}")
 
     # Step 4: Save image info to JSON
+    image_url = os.getenv("IMAGE_HOST_URL")
     image_data = {
         "filename": file.filename,
         "md5": file_md5,
         "original_path": original_file_location,
-        "compressed_path": resized_file_location
+        "compressed_path": resized_file_location,
+        "image_url": f"{image_url}/images/compressed/{file_md5}.jpg"
     }
 
     # Append new image info
@@ -128,7 +130,8 @@ async def process_and_save_image(file: UploadFile):
         "filename": file.filename,
         "md5": file_md5,
         "original_path": original_file_location,
-        "compressed_path": resized_file_location
+        "compressed_path": resized_file_location,
+        "image_url": f"{image_url}/images/compressed/{file_md5}.jpg"
     }
 
 def get_all_images() -> List[dict]:
