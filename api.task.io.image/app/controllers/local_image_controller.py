@@ -23,5 +23,6 @@ def delete_existing_image(md5: str):
     return delete_image(md5)
 
 @router.get("/image/compressed/{md5}")
-def get_image_from_server(md5: str):
-    return FileResponse(get_image(md5))
+async def get_image_from_server(md5: str):
+    result = await get_image(md5)
+    return FileResponse(result)
