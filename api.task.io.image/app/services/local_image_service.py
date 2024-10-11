@@ -86,7 +86,7 @@ async def process_and_save_image(file: UploadFile):
 
     except Exception as e:
         logger.error(f"Error calculating MD5 hash: {e}")
-        raise HTTPException(status_code=500, detail="Error calculating MD5 hash".format(e))
+        raise HTTPException(status_code=500, detail=f"Error occurred: {e}")
 
     # Step 3: Resize and convert the image after saving the original
     try:
