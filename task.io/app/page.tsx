@@ -10,6 +10,25 @@ interface Image {
   image_url: string;
 }
 
+// Represents the structure of the error detail
+interface ErrorDetail {
+  message: string; // Error message
+  code?: string;   // Optional error code
+}
+
+// Represents the structure of the response object
+interface ErrorResponse {
+  data: {
+    detail: ErrorDetail; // Contains error details
+  };
+  status?: number; // Optional status code
+}
+
+// Define the structure of the unknown error
+interface CustomError {
+  response?: ErrorResponse; // Response may be undefined
+}
+
 export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
@@ -61,13 +80,15 @@ export default function Home() {
       setNotification(null);  // Clear any previous notification
     } catch (err: unknown) {
       
-      // Check if err is an object and has a response property
-      const errorMessage = (err as any)?.response?.data?.detail || 'Upload failed'; // Use 'any' to access properties safely
-      const errorCode = (err as any)?.response?.status || 'Unknown error';
+      // Use type assertion to cast the unknown error to CustomError
+      const customError = err as CustomError;
+
+      const errorMessage = customError.response?.data?.detail || 'Upload failed'; // Accessing the message
+      const errorCode = customError.response?.status || 'Unknown error'; // Accessing the status code
 
       setNotification({
         message: errorMessage,
-        errorCode: errorCode,
+        errorCode: errorCode.toString(),
       });
     } finally {
       setLoading(false);  // End loading
