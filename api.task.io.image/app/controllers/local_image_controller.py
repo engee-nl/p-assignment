@@ -5,7 +5,9 @@ router = APIRouter()
 
 @router.post("/upload")
 async def upload_image(file: UploadFile = File(...)):
-    return process_and_save_image(file)
+    # Await the process_and_save_image function since it's an async function
+    result = await process_and_save_image(file)
+    return result
 
 @router.get("/images")
 def get_images():
