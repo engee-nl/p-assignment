@@ -101,7 +101,7 @@ async def process_and_save_image(file: UploadFile):
                 desired_height = int(desired_width * aspect_ratio)
 
             # Resize the image
-            resized_image = img.resize((desired_width, desired_height), Image.ANTIALIAS)
+            resized_image = img.resize((desired_width, desired_height))
             resized_image = resized_image.convert("RGB")  # Convert to JPG
 
             # Save the resized image with 70% quality
