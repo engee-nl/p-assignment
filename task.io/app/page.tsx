@@ -59,13 +59,12 @@ export default function Home() {
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
-    } catch (err: unknown) {
-      const errorMessage = err.response?.data?.detail || 'Upload failed';
-      const errorCode = err.response?.status || 'Unknown error';
+    } catch (err: any) {
+      const errorMessage = err?.response?.data?.detail || 'Upload failed';
 
       setNotification({
         message: errorMessage,
-        errorCode: errorCode.toString(),
+        errorCode: "",
       });
     } finally {
       setLoading(false);  // End loading
