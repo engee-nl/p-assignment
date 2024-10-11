@@ -109,7 +109,7 @@ async def process_and_save_image(file: UploadFile):
             resized_image.save(resized_file_location, "JPEG", quality=70)
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Error resizing or converting the image")
+        raise HTTPException(status_code=500, detail=f"Error resizing or converting the image: {e}")
 
     # Step 4: Save image info to JSON
     image_data = {
