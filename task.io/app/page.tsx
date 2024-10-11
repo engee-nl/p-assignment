@@ -1,3 +1,5 @@
+"use client";
+
 import { useEffect, useState, ChangeEvent } from 'react';
 import { uploadImage, getImages, deleteImage, updateImage } from './services/imageService';
 
