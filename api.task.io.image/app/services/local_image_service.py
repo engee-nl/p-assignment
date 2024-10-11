@@ -15,18 +15,12 @@ def save_image_list_to_json(image_list: List[dict]):
     with open(JSON_FILE, 'w') as f:
         json.dump(image_list, f, indent=4)
 
-def load_image_list_from_json() -> List[dict]:
-    if not os.path.exists(JSON_FILE):
-        return []
-    try:
-        with open(JSON_FILE, 'r') as f:
-            content = f.read().strip()  # Strip any extra whitespace or newlines
-            if not content:  # If file is empty, return an empty list
-                return []
-            return json.loads(content)
-    except json.JSONDecodeError:
-        # If the file is not valid JSON, return an empty list
-        return []
+async def load_image_list_from_json() -> list:
+    if Path(JSON_FILE).exists():
+        async with aiofiles.open(JSON_FILE, 'r') as json_file:
+            data = await json_file.read()
+            return json.loads(data) if data else []
+    return []    
 
 def calculate_md5(file: UploadFile) -> str:
     hash_md5 = hashlib.md5()
@@ -77,7 +71,7 @@ async def process_and_save_image(file: UploadFile):
         file_md5 = md5_hash.hexdigest()
 
         # Check if the image already exists by MD5
-        image_list = load_image_list_from_json()
+        image_list = await load_image_list_from_json()
         if any(image['md5'] == file_md5 for image in image_list):
             raise HTTPException(status_code=409, detail="Image already exists")
 
@@ -117,12 +111,12 @@ async def process_and_save_image(file: UploadFile):
         "resized_location": resized_file_location
     }
 
-def get_all_images() -> List[dict]:
-    image_list = load_image_list_from_json()
+async def get_all_images() -> List[dict]:
+    image_list = await load_image_list_from_json()
     return image_list
 
-def update_image(md5: str, new_width: int, new_height: int):
-    image_list = load_image_list_from_json()
+async def update_image(md5: str, new_width: int, new_height: int):
+    image_list = await load_image_list_from_json()
     image_data = next((img for img in image_list if img['md5'] == md5), None)
     
     if not image_data:
@@ -138,8 +132,8 @@ def update_image(md5: str, new_width: int, new_height: int):
 
     return {"resized_image": resized_image_path}
 
-def delete_image(md5: str):
-    image_list = load_image_list_from_json()
+async def delete_image(md5: str):
+    image_list = await load_image_list_from_json()
     image_data = next((img for img in image_list if img['md5'] == md5), None)
     
     if not image_data:
