@@ -12,7 +12,8 @@ interface Image {
 
 // Define the structure of the unknown error
 interface CustomError {
-  detail?: string; // Response may be undefined
+  detail?: string; // Response may be undefined,
+  status?: string; // Response may be undefined
 }
 
 export default function Home() {
