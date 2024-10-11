@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, HTTPException, File
-from app.services.image_service import process_and_save_image, get_all_images, update_image, delete_image
+from app.services.local_image_service import process_and_save_image, get_all_images, update_image, delete_image
 
 router = APIRouter()
 
