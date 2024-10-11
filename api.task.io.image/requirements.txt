@@ -1,8 +1,8 @@
-fastapi
-uvicorn
-pillow  # for image processing
 boto3   # for AWS S3 interaction
-sqlalchemy  # for database ORM
+fastapi
+pillow  # for image processing
 pymysql
 pydantic
 python-dotenv  # for reading environment variables
+sqlalchemy  # for database ORM
+uvicorn
