@@ -3,7 +3,7 @@ import React from 'react';
 
 interface NotificationProps {
   message: string;
-  error?: boolean;
+  error?: string;
 }
 
 const Notification: React.FC<NotificationProps> = ({ message, error }) => {
