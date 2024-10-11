@@ -1,61 +1,111 @@
-# app/services/local_image_service.py
+import os
 import hashlib
 from PIL import Image
-from io import BytesIO
-from app.models.database import SessionLocal, Image as ImageModel
-from app.utils.file_utils import save_image_to_disk
-from app.config import logger
+from fastapi import UploadFile, HTTPException
+import json
+from typing import List
 
-def calculate_md5(file):
-    """Calculate the MD5 hash of the uploaded file content."""
-    md5 = hashlib.md5()
-    file.seek(0)  # Ensure we're reading from the start of the file
-    while chunk := file.read(8192):
-        md5.update(chunk)
-    file.seek(0)  # Reset the file pointer after reading
-    return md5.hexdigest()
+UPLOAD_FOLDER = "uploaded_images"
+JSON_FILE = "image_list.json"
+MAX_FILE_SIZE = 20 * 1024 * 1024  # 20MB
 
-def resize_image(file, size=(200, 200)):
-    try:
-        image = Image.open(file)
-        image = image.resize(size)
-        buffer = BytesIO()
-        image.save(buffer, format='JPEG')
-        buffer.seek(0)
-        return buffer
-    except Exception as e:
-        logger.error(f"Error resizing image: {e}")
-        raise
+def save_image_list_to_json(image_list: List[dict]):
+    with open(JSON_FILE, 'w') as f:
+        json.dump(image_list, f, indent=4)
 
-def save_image_to_db(image_id, filename, file_path):
-    db = SessionLocal()
-    try:
-        image_record = ImageModel(id=image_id, filename=filename, url=file_path)
-        db.add(image_record)
-        db.commit()
-        db.refresh(image_record)
-    except Exception as e:
-        logger.error(f"Error saving image to database: {e}")
-        raise
-    finally:
-        db.close()
+def load_image_list_from_json() -> List[dict]:
+    if not os.path.exists(JSON_FILE):
+        return []
+    with open(JSON_FILE, 'r') as f:
+        return json.load(f)
 
-def process_and_save_image_locally(file):
-    try:
-        # Generate MD5 hash from the image content
-        image_id = calculate_md5(file.file)
+def calculate_md5(file: UploadFile) -> str:
+    hash_md5 = hashlib.md5()
+    for chunk in iter(lambda: file.file.read(4096), b""):
+        hash_md5.update(chunk)
+    file.file.seek(0)  # Reset file pointer after reading
+    return hash_md5.hexdigest()
 
-        # Resize the image
-        resized_image = resize_image(file.file)
+def save_original_image(file: UploadFile, md5_hash: str) -> str:
+    ext = file.filename.split('.')[-1]
+    original_filename = f"{md5_hash}.{ext}"
+    original_path = os.path.join(UPLOAD_FOLDER, original_filename)
+    with open(original_path, "wb") as f:
+        f.write(file.file.read())
+    file.file.seek(0)  # Reset file pointer after saving
+    return original_path
 
-        # Save to local disk
-        filename = f"{image_id}.jpg"
-        file_path = save_image_to_disk(resized_image, filename)
+def compress_image_to_jpg(original_path: str, md5_hash: str) -> str:
+    img = Image.open(original_path)
+    jpg_filename = f"{md5_hash}.jpg"
+    jpg_path = os.path.join(UPLOAD_FOLDER, jpg_filename)
+    img = img.convert("RGB")  # Convert to RGB if it's not already
+    img.save(jpg_path, "JPEG", quality=70)
+    return jpg_path
 
-        # Save to the database
-        save_image_to_db(image_id, filename, file_path)
+def process_and_save_image(file: UploadFile):
+    if file.size > MAX_FILE_SIZE:
+        raise HTTPException(status_code=413, detail="File size exceeds 20MB")
 
-        return {"id": image_id, "filename": filename, "path": file_path}
-    except Exception as e:
-        logger.error(f"Error processing and saving image locally: {e}")
-        raise
+    md5_hash = calculate_md5(file)
+    
+    image_list = load_image_list_from_json()
+
+    # Check if image already exists
+    if any(img['md5'] == md5_hash for img in image_list):
+        raise HTTPException(status_code=400, detail="Image already exists")
+    
+    # Save original image
+    original_path = save_original_image(file, md5_hash)
+
+    # Compress the image to JPG
+    compressed_image_path = compress_image_to_jpg(original_path, md5_hash)
+
+    # Save image info to JSON
+    image_list.append({"filename": file.filename, "md5": md5_hash, "original_path": original_path, "compressed_path": compressed_image_path})
+    save_image_list_to_json(image_list)
+
+    return {"md5": md5_hash, "compressed_image": compressed_image_path}
+
+def get_all_images() -> List[dict]:
+    image_list = load_image_list_from_json()
+    return image_list
+
+def update_image(md5: str, new_width: int, new_height: int):
+    image_list = load_image_list_from_json()
+    image_data = next((img for img in image_list if img['md5'] == md5), None)
+    
+    if not image_data:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    original_path = image_data["original_path"]
+    
+    # Resize the image
+    img = Image.open(original_path)
+    img = img.resize((new_width, new_height))
+    resized_image_path = f"{os.path.splitext(original_path)[0]}_{new_width}x{new_height}.jpg"
+    img.save(resized_image_path, "JPEG", quality=70)
+
+    return {"resized_image": resized_image_path}
+
+def delete_image(md5: str):
+    image_list = load_image_list_from_json()
+    image_data = next((img for img in image_list if img['md5'] == md5), None)
+    
+    if not image_data:
+        raise HTTPException(status_code=404, detail="Image not found")
+    
+    original_path = image_data["original_path"]
+    compressed_path = image_data["compressed_path"]
+    
+    # Remove files from disk
+    if os.path.exists(original_path):
+        os.remove(original_path)
+    if os.path.exists(compressed_path):
+        os.remove(compressed_path)
+    
+    # Remove from JSON
+    image_list = [img for img in image_list if img['md5'] != md5]
+    save_image_list_to_json(image_list)
+
+    return {"message": "Image deleted successfully"}
