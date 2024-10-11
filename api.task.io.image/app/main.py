@@ -2,8 +2,12 @@
 from fastapi import FastAPI
 from app.controllers import image_controller, local_image_controller
 from app.models.database import init_db
+from app.config import logger  # Import logger
 
 app = FastAPI()
+
+# Initialize logging
+logger.info("Starting FastAPI application...")
 
 # Initialize the database
 @app.on_event("startup")

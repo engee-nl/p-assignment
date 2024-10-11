@@ -1,10 +1,9 @@
 import boto3
 from botocore.exceptions import ClientError
-import logging
+from app.config import logger
 
 s3_client = boto3.client('s3')
 S3_BUCKET_NAME = "your_bucket_name"
-logger = logging.getLogger(__name__)
 
 def upload_file_to_s3(file, filename):
     try:
