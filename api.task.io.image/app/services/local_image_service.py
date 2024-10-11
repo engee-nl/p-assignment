@@ -6,6 +6,7 @@ import json
 import aiofiles
 from typing import List
 from pathlib import Path
+from app.config import logger  # Import logger
 
 UPLOAD_FOLDER = "uploaded_images"
 JSON_FILE = "image_list.json"
@@ -76,6 +77,7 @@ async def process_and_save_image(file: UploadFile):
             raise HTTPException(status_code=409, detail="Image already exists")
 
     except Exception as e:
+        logger.error(f"Error calculating MD5 hash: {e}")
         raise HTTPException(status_code=500, detail="Error calculating MD5 hash")
 
     # Step 3: Resize and convert the image after saving the original
