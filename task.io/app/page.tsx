@@ -59,12 +59,15 @@ export default function Home() {
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
-    } catch (err: any) {
-      const errorMessage = err?.response?.data?.detail || 'Upload failed';
+    } catch (err: unknown) {
+      
+      // Check if err is an object and has a response property
+      const errorMessage = (err as any)?.response?.data?.detail || 'Upload failed'; // Use 'any' to access properties safely
+      const errorCode = (err as any)?.response?.status || 'Unknown error';
 
       setNotification({
         message: errorMessage,
-        errorCode: "",
+        errorCode: errorCode,
       });
     } finally {
       setLoading(false);  // End loading
