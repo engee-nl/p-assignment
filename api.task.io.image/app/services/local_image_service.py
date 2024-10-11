@@ -77,7 +77,10 @@ async def process_and_save_image(file: UploadFile):
         file_md5 = md5_hash.hexdigest()
 
         # Check if the image already exists by MD5
-        if os.path.exists(f"uploaded_images/{file_md5}.jpg"):
+        image_list = load_image_list_from_json()
+        image_data = next((img for img in image_list if img['md5'] == file_md5), None)
+        if image_data:
+        #if os.path.exists(f"uploaded_images/{file_md5}.jpg"):
             raise HTTPException(status_code=409, detail="Image already exists")
 
     except Exception as e:
@@ -103,15 +106,6 @@ async def process_and_save_image(file: UploadFile):
         "original_location": original_file_location,
         "resized_location": resized_file_location
     }
-
-    # Read existing data
-    image_list_path = "uploaded_images/image_list.json"
-    if Path(image_list_path).exists():
-        async with aiofiles.open(image_list_path, 'r') as json_file:
-            data = await json_file.read()
-            image_list = json.loads(data) if data else []
-    else:
-        image_list = []
 
     # Append new image info
     image_list.append(image_info)
