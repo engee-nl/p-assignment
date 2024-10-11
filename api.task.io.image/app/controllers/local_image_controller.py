@@ -20,3 +20,7 @@ def update_existing_image(md5: str, width: int, height: int):
 @router.delete("/delete/{md5}")
 def delete_existing_image(md5: str):
     return delete_image(md5)
+
+@router.get("/image/compressed/{md5key}")
+def get_image(md5: str):
+    return get_image(md5)

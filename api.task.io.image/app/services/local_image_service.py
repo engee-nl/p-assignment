@@ -1,12 +1,13 @@
 import os
 import hashlib
+from app.config import logger  # Import logger
 from PIL import Image
 from fastapi import UploadFile, HTTPException
+from fastapi.responses import FileResponse
 import json
 import aiofiles
 from typing import List
 from pathlib import Path
-from app.config import logger  # Import logger
 
 UPLOAD_FOLDER = "uploaded_images"
 JSON_FILE = "image_list.json"
@@ -101,7 +102,7 @@ async def process_and_save_image(file: UploadFile):
         raise HTTPException(status_code=500, detail="Error resizing or converting the image")
 
     # Step 4: Save image info to JSON
-    image_info = {
+    image_data = {
         "filename": file.filename,
         "md5": file_md5,
         "original_path": original_file_location,
@@ -109,7 +110,7 @@ async def process_and_save_image(file: UploadFile):
     }
 
     # Append new image info
-    image_list.append(image_info)
+    image_list.append(image_data)
     save_image_list_to_json(image_list)
 
     # Return a JSON response with the saved image details
@@ -162,3 +163,25 @@ def delete_image(md5: str):
     save_image_list_to_json(image_list)
 
     return {"message": "Image deleted successfully"}
+
+async def get_image(md5key: str):
+    try:
+        image_list = await load_image_list_from_json()
+        image_data = next((image for image in image_list if image['md5'] == md5key), None)
+        
+        # Check if the image info exists
+        if image_data is None:
+            raise HTTPException(status_code=404, detail="Image not found")
+
+        # Retrieve the file path from the image info
+        image_path = image_data['compressed_path']
+
+        # Check if the file exists
+        if not Path(image_path).exists():
+            raise HTTPException(status_code=404, detail="Image file not found")
+        
+        # Return the file as a response
+        return FileResponse(image_path)
+
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
