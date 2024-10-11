@@ -178,29 +178,51 @@ export default function Home() {
               height={500} // Set appropriate height
               className="w-full h-48 object-cover rounded-md mb-4"
             />
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded-md mb-2 hover:bg-red-600"
-              onClick={() => handleDelete(image.md5)}
-            >
-              Delete
-            </button>
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mb-2 hover:bg-blue-600"
-              onClick={() => openModal(image.image_url)}
-            >
-              View Original
-            </button>
-            <input
-              type="file"
-              onChange={handleImageSelect}
-              className="block w-full mb-4 p-2 border border-gray-300 rounded-md"
-            />
-            <button
-              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              onClick={() => handleUpdate(image.md5)}
-            >
-              Update
-            </button>
+
+            <div className="space-y-4">
+              {/* Update Section */}
+              <div className="flex flex-col">
+                <label htmlFor="fileInput" className="text-lg font-semibold mb-2">Update Image:</label>
+                <div className="flex">
+                  <input
+                    type="file"
+                    id="fileInput"
+                    className="border border-gray-300 rounded-l-md px-4 py-2 flex-grow"
+                    onChange={handleImageSelect} 
+                  />
+                  <button
+                    onClick={() => handleUpdate(image.md5)}
+                    className="bg-blue-500 text-white rounded-r-md px-4 py-2"
+                  >
+                    Update
+                  </button>
+                </div>
+              </div>
+
+              {/* Separator */}
+              <hr className="border-t border-gray-300" />
+
+              {/* View Original Button */}
+              <button
+                onClick={() => openModal(image.image_url)}
+                className="bg-gray-500 text-white rounded-md w-full px-4 py-2"
+              >
+                View Original
+              </button>
+
+              {/* Separator */}
+              <hr className="border-t border-gray-300" />
+
+              {/* Delete Button */}
+              <button
+                onClick={() => handleDelete(image.md5)}
+                className="bg-red-500 text-white rounded-md w-full px-4 py-2"
+              >
+                Delete
+              </button>
+            </div>
+
+
           </div>
         ))}
       </div>
