@@ -4,6 +4,8 @@ from PIL import Image
 from fastapi import UploadFile, HTTPException
 import json
 from typing import List
+from app.config import logger  # Import logger
+import traceback
 
 UPLOAD_FOLDER = "uploaded_images"
 JSON_FILE = "image_list.json"
@@ -51,28 +53,34 @@ def compress_image_to_jpg(original_path: str, md5_hash: str) -> str:
     return jpg_path
 
 def process_and_save_image(file: UploadFile):
-    if file.size > MAX_FILE_SIZE:
-        raise HTTPException(status_code=413, detail="File size exceeds 20MB")
+    try:
+        if file.size > MAX_FILE_SIZE:
+            raise HTTPException(status_code=413, detail="File size exceeds 20MB")
 
-    md5_hash = calculate_md5(file)
-    
-    image_list = load_image_list_from_json()
+        md5_hash = calculate_md5(file)
+        
+        image_list = load_image_list_from_json()
 
-    # Check if image already exists
-    if any(img['md5'] == md5_hash for img in image_list):
-        raise HTTPException(status_code=400, detail="Image already exists")
-    
-    # Save original image
-    original_path = save_original_image(file, md5_hash)
+        # Check if image already exists
+        if any(img['md5'] == md5_hash for img in image_list):
+            raise HTTPException(status_code=400, detail="Image already exists")
+        
+        # Save original image
+        original_path = save_original_image(file, md5_hash)
 
-    # Compress the image to JPG
-    compressed_image_path = compress_image_to_jpg(original_path, md5_hash)
+        # Compress the image to JPG
+        compressed_image_path = compress_image_to_jpg(original_path, md5_hash)
 
-    # Save image info to JSON
-    image_list.append({"filename": file.filename, "md5": md5_hash, "original_path": original_path, "compressed_path": compressed_image_path})
-    save_image_list_to_json(image_list)
+        # Save image info to JSON
+        image_list.append({"filename": file.filename, "md5": md5_hash, "original_path": original_path, "compressed_path": compressed_image_path})
+        save_image_list_to_json(image_list)
 
-    return {"md5": md5_hash, "compressed_image": compressed_image_path}
+        return {"md5": md5_hash, "compressed_image": compressed_image_path}
+    except Exception as exc:
+        error_trace = traceback.format_exc()
+        logger.error(f"Image processing failed: {file.filename}")
+        logger.error(f"Traceback: {error_trace}")
+        raise HTTPException(status_code=500, detail="Image processing failed")
 
 def get_all_images() -> List[dict]:
     image_list = load_image_list_from_json()
