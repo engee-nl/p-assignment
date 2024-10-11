@@ -42,7 +42,7 @@ export default function Home() {
     if (!selectedImage) return;
 
     const formData = new FormData();
-    formData.append('image', selectedImage);
+    formData.append('file', selectedImage);
 
     setLoading(true);  // Start loading
 
@@ -112,7 +112,13 @@ export default function Home() {
       {previewUrl && (
         <div className="mb-4">
           <h2 className="text-xl font-semibold mb-2">Image Preview:</h2>
-          <img src={previewUrl} alt="Preview" className="w-full h-48 object-cover rounded-md" />
+          <Image
+            src={previewUrl}
+            alt="Preview"
+            width={500}
+            height={500}
+            className="w-full h-48 object-cover rounded-md"
+          />
         </div>
       )}
 
@@ -140,15 +146,17 @@ export default function Home() {
       )}
 
       {/* Display the list of uploaded images */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
         {images.map((image) => (
           <div
             key={image.md5}
             className="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg"
           >
-            <img
+            <Image
               src={image.image_url}
               alt="Uploaded"
+              width={500} // Set appropriate width
+              height={500} // Set appropriate height
               className="w-full h-48 object-cover rounded-md mb-4"
             />
             <button
@@ -165,11 +173,11 @@ export default function Home() {
             </button>
             <input
               type="file"
-              onChange={(e: ChangeEvent<HTMLInputElement>) => setSelectedImage(e.target.files?.[0] || null)}
+              onChange={handleImageSelect}
               className="block w-full mb-4 p-2 border border-gray-300 rounded-md"
             />
             <button
-              className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
               onClick={() => handleUpdate(image.md5)}
             >
               Update
@@ -178,27 +186,31 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Modal for displaying the original image */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-          <div className="relative bg-white rounded-lg p-6">
-            <button
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-800"
-              onClick={closeModal}
-            >
-              X {/* Close button */}
-            </button>
-            {modalImage && (
-              <img
-                src={modalImage}
-                alt="Original Image"
-                className="w-full h-auto max-h-screen object-contain"
-              />
-            )}
-          </div>
+    {/* Modal for displaying the original image */}
+    {showModal && (
+      <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+        <div className="relative bg-white rounded-lg p-6">
+          {/* Improved Close Button */}
+          <button
+            className="absolute top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none"
+            onClick={closeModal}
+            aria-label="Close modal"
+          >
+            <span className="text-2xl font-bold">&times;</span> {/* Using a larger × symbol */}
+          </button>
+          {modalImage && (
+            <Image
+              src={modalImage}
+              alt="Original Image"
+              width={800} // Set width for modal image
+              height={800} // Set height for modal image
+              className="w-full h-auto max-h-screen object-contain"
+            />
+          )}
         </div>
-      )}
-
+      </div>
+    )}
+    
     </div>
   );
 }
