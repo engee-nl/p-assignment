@@ -30,7 +30,7 @@ export default function Home() {
 
     if (file) {
       const formData = new FormData();
-      formData.append('image', file);
+      formData.append('file', file);
 
       try {
         await uploadImage(formData);
