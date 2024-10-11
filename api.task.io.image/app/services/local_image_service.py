@@ -165,7 +165,7 @@ def delete_image(md5: str):
 
 async def get_image(md5key: str):
     try:
-        image_list = await load_image_list_from_json()
+        image_list = load_image_list_from_json()
         image_data = next((image for image in image_list if image['md5'] == md5key), None)
         
         # Check if the image info exists
