@@ -17,13 +17,13 @@ export const getImages = async () => {
 };
 
 // Delete image
-export const deleteImage = async (id: number) => {
-  return await axios.delete(`${API_HOST}/delete/${id}`);
+export const deleteImage = async (md5: string) => {
+  return await axios.delete(`${API_HOST}/delete/${md5}`);
 };
 
 // Update image
-export const updateImage = async (id: number, formData: FormData) => {
-  return await axios.put(`${API_HOST}/images/${id}`, formData, {
+export const updateImage = async (md5: string, formData: FormData) => {
+  return await axios.put(`${API_HOST}/images/${md5}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

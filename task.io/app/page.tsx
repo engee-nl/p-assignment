@@ -5,8 +5,8 @@ import { uploadImage, getImages, deleteImage, updateImage } from './services/ima
 
 // Define the types for images and API response
 interface Image {
-  id: number;
-  url: string;
+  md5: string;
+  image_url: string;
 }
 
 export default function Home() {
@@ -42,22 +42,22 @@ export default function Home() {
     }
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = async (md5: string) => {
     try {
-      await deleteImage(id);
-      setImages(images.filter(image => image.id !== id));
+      await deleteImage(md5);
+      setImages(images.filter(image => image.md5 !== md5));
     } catch (err) {
       console.error('Error deleting image:', err);
     }
   };
 
-  const handleUpdate = async (id: number) => {
+  const handleUpdate = async (md5: string) => {
     if (selectedImage) {
       const formData = new FormData();
       formData.append('image', selectedImage);
 
       try {
-        await updateImage(id, formData);
+        await updateImage(md5, formData);
         const response = await getImages();
         setImages(response.data);
       } catch (err) {
