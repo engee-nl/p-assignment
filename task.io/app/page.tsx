@@ -232,9 +232,9 @@ export default function Home() {
               <Image
                 src={modalImage}
                 alt="Original Image"
-                width={800}
-                height={800}
-                className="w-full h-auto max-h-screen object-contain"
+                width={undefined}
+                height={undefined}
+                className="w-full h-full object-cover"
               />
             )}
           </div>
