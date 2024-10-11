@@ -2,6 +2,7 @@
 
 import { useEffect, useState, ChangeEvent } from 'react';
 import { uploadImage, getImages, deleteImage, updateImage } from './services/imageService';
+import Image from 'next/image';
 
 // Define the types for images and API response
 interface Image {
@@ -210,7 +211,7 @@ export default function Home() {
         </div>
       </div>
     )}
-    
+
     </div>
   );
 }
