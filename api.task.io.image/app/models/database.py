@@ -31,4 +31,4 @@ def init_db():
     '''
     Base.metadata.create_all(bind=engine)
     '''
-    logger.error(f"to do : connect to DB")
+    logger.info(f"to do : connect to DB")
