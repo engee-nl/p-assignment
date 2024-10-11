@@ -3,6 +3,7 @@ import hashlib
 from PIL import Image
 from fastapi import UploadFile, HTTPException
 import json
+import aiofiles
 from typing import List
 
 UPLOAD_FOLDER = "uploaded_images"
@@ -50,29 +51,51 @@ def compress_image_to_jpg(original_path: str, md5_hash: str) -> str:
     img.save(jpg_path, "JPEG", quality=70)
     return jpg_path
 
-def process_and_save_image(file: UploadFile):
-    if file.size > MAX_FILE_SIZE:
-        raise HTTPException(status_code=413, detail="File size exceeds 20MB")
+async def process_and_save_image(file: UploadFile):
+    # Step 1: Save the original file to disk first
+    try:
+        original_file_location = f"uploaded_images/{file.filename}"
+        
+        # Save the file asynchronously to avoid blocking the event loop
+        async with aiofiles.open(original_file_location, 'wb') as out_file:
+            while content := await file.read(1024):  # Read in chunks to handle large files
+                await out_file.write(content)
 
-    md5_hash = calculate_md5(file)
-    
-    image_list = load_image_list_from_json()
+        # Ensure the file is fully written before moving on
+        await file.seek(0)  # Reset file pointer after saving
 
-    # Check if image already exists
-    if any(img['md5'] == md5_hash for img in image_list):
-        raise HTTPException(status_code=400, detail="Image already exists")
-    
-    # Save original image
-    original_path = save_original_image(file, md5_hash)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error saving the original image")
 
-    # Compress the image to JPG
-    compressed_image_path = compress_image_to_jpg(original_path, md5_hash)
+    # Step 2: After the file is fully saved, check its MD5 hash
+    try:
+        md5_hash = hashlib.md5()
+        async with aiofiles.open(original_file_location, 'rb') as f:
+            while chunk := await f.read(8192):
+                md5_hash.update(chunk)
+        file_md5 = md5_hash.hexdigest()
 
-    # Save image info to JSON
-    image_list.append({"filename": file.filename, "md5": md5_hash, "original_path": original_path, "compressed_path": compressed_image_path})
-    save_image_list_to_json(image_list)
+        # Check if the image already exists by MD5
+        if os.path.exists(f"uploaded_images/{file_md5}.jpg"):
+            raise HTTPException(status_code=409, detail="Image already exists")
 
-    return {"md5": md5_hash, "compressed_image": compressed_image_path}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error calculating MD5 hash")
+
+    # Step 3: Resize and convert the image after saving the original
+    try:
+        with Image.open(original_file_location) as img:
+            resized_image = img.resize((800, 800))  # Example resize
+            resized_image = resized_image.convert("RGB")  # Convert to JPG
+
+            # Save the resized image with 70% quality
+            resized_file_location = f"uploaded_images/{file_md5}.jpg"
+            resized_image.save(resized_file_location, "JPEG", quality=70)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail="Error resizing or converting the image")
+
+    return {"filename": file.filename, "md5": file_md5, "resized_location": resized_file_location}
 
 def get_all_images() -> List[dict]:
     image_list = load_image_list_from_json()
