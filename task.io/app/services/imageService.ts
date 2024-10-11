@@ -2,7 +2,34 @@ import axios from 'axios';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
+// Upload image with progress bar
+export const uploadImage = (formData: FormData, onUploadProgress: (progressEvent: ProgressEvent) => void) => {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('POST', `${API_HOST}/upload`, true);
+
+    // Set up event listener for progress
+    xhr.upload.onprogress = onUploadProgress;
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(JSON.parse(xhr.responseText));
+      } else {
+        reject(new Error('Failed to upload image'));
+      }
+    };
+
+    xhr.onerror = () => {
+      reject(new Error('Network error'));
+    };
+
+    xhr.send(formData);
+  });
+};
+
 // Upload image
+/*
 export const uploadImage = async (formData: FormData) => {
   return await axios.post(`${API_HOST}/upload`, formData, {
     headers: {
@@ -10,6 +37,7 @@ export const uploadImage = async (formData: FormData) => {
     },
   });
 };
+*/
 
 // Get images
 export const getImages = async () => {
