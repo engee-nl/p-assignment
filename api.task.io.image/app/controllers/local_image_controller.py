@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, HTTPException, File
-from app.services.local_image_service import process_and_save_image, get_all_images, update_image, delete_image
+from app.services.local_image_service import process_and_save_image, get_all_images, update_image, delete_image, get_image
 
 router = APIRouter()
 
@@ -22,5 +22,5 @@ def delete_existing_image(md5: str):
     return delete_image(md5)
 
 @router.get("/image/compressed/{md5}")
-def get_image(md5: str):
+def get_image_from_server(md5: str):
     return get_image(md5)
