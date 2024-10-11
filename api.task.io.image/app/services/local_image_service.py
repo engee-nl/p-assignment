@@ -5,6 +5,7 @@ from fastapi import UploadFile, HTTPException
 import json
 import aiofiles
 from typing import List
+from pathlib import Path
 
 UPLOAD_FOLDER = "uploaded_images"
 JSON_FILE = "image_list.json"
@@ -94,6 +95,27 @@ async def process_and_save_image(file: UploadFile):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error resizing or converting the image")
+
+    # Step 4: Save image info to JSON
+    image_info = {
+        "filename": file.filename,
+        "md5": file_md5,
+        "original_location": original_file_location,
+        "resized_location": resized_file_location
+    }
+
+    # Read existing data
+    image_list_path = "uploaded_images/image_list.json"
+    if Path(image_list_path).exists():
+        async with aiofiles.open(image_list_path, 'r') as json_file:
+            data = await json_file.read()
+            image_list = json.loads(data) if data else []
+    else:
+        image_list = []
+
+    # Append new image info
+    image_list.append(image_info)
+    save_image_list_to_json(image_list)
 
     # Return a JSON response with the saved image details
     return {
