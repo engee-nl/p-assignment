@@ -78,9 +78,7 @@ async def process_and_save_image(file: UploadFile):
 
         # Check if the image already exists by MD5
         image_list = load_image_list_from_json()
-        image_data = next((img for img in image_list if img['md5'] == file_md5), None)
-        if image_data:
-        #if os.path.exists(f"uploaded_images/{file_md5}.jpg"):
+        if any(image['md5'] == file_md5 for image in image_list):
             raise HTTPException(status_code=409, detail="Image already exists")
 
     except Exception as e:
