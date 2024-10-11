@@ -81,17 +81,17 @@ export default function Home() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
         {images.map((image) => (
           <div
-            key={image.id}
+            key={image.md5}
             className="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg"
           >
             <img
-              src={image.url}
+              src={image.image_url}
               alt="Uploaded"
               className="w-full h-48 object-cover rounded-md mb-4"
             />
             <button
               className="bg-red-500 text-white px-4 py-2 rounded-md mb-2 hover:bg-red-600"
-              onClick={() => handleDelete(image.id)}
+              onClick={() => handleDelete(image.md5)}
             >
               Delete
             </button>
@@ -102,7 +102,7 @@ export default function Home() {
             />
             <button
               className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
-              onClick={() => handleUpdate(image.id)}
+              onClick={() => handleUpdate(image.md5)}
             >
               Update
             </button>

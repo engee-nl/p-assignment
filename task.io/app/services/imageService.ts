@@ -1,27 +1,29 @@
 import axios from 'axios';
 
-// Upload image to the API
-export const uploadImage = (formData: FormData) => {
-  return axios.post('/api/upload', formData, {
+const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
+
+// Upload image
+export const uploadImage = async (formData: FormData) => {
+  return await axios.post(`${API_HOST}/upload`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
   });
 };
 
-// Fetch all uploaded images
-export const getImages = () => {
-  return axios.get('/api/images');
+// Get images
+export const getImages = async () => {
+  return await axios.get(`${API_HOST}/images`);
 };
 
-// Delete image by ID
-export const deleteImage = (id: number) => {
-  return axios.delete(`/api/images/${id}`);
+// Delete image
+export const deleteImage = async (id: number) => {
+  return await axios.delete(`${API_HOST}/delete/${id}`);
 };
 
-// Update image by ID
-export const updateImage = (id: number, formData: FormData) => {
-  return axios.put(`/api/images/${id}`, formData, {
+// Update image
+export const updateImage = async (id: number, formData: FormData) => {
+  return await axios.put(`${API_HOST}/images/${id}`, formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },

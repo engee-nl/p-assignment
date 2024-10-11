@@ -19,10 +19,6 @@ def get_images():
 def update_existing_image(md5: str, width: int, height: int):
     return update_image(md5, width, height)
 
-@router.delete("/delete/{md5}")
-def delete_existing_image(md5: str):
-    return delete_image(md5)
-
 @router.delete("/delete/{md5}/", response_model=ImageDeleteResponse)
 def delete_existing_image(md5: str) -> ImageDeleteResponse:
     try:

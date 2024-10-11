@@ -146,14 +146,39 @@ def update_image(md5: str, new_width: int, new_height: int):
         raise HTTPException(status_code=404, detail="Image not found")
     
     original_path = image_data["original_path"]
-    
-    # Resize the image
-    img = Image.open(original_path)
-    img = img.resize((new_width, new_height))
-    resized_image_path = f"{os.path.splitext(original_path)[0]}_{new_width}x{new_height}.jpg"
-    img.save(resized_image_path, "JPEG", quality=70)
 
-    return {"resized_image": resized_image_path}
+    # Resize and convert the image after saving the original
+    try:
+        with Image.open(original_path) as img:
+            original_width, original_height = img.size
+        
+            # Set desired width and height
+            desired_width = new_width
+            desired_height = None  # Keep None to maintain aspect ratio
+            
+            if desired_height is None:
+                aspect_ratio = original_height / original_width
+                desired_height = int(desired_width * aspect_ratio)
+
+            # Resize the image
+            resized_image = img.resize((desired_width, desired_height))
+            resized_image = resized_image.convert("RGB")  # Convert to JPG
+
+            # Save the resized image with 70% quality
+            resized_file_location = f"uploaded_images/{md5}.jpg"
+            resized_image.save(resized_file_location, "JPEG", quality=70)
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error resizing or converting the image: {e}")
+
+    # Save image info to JSON
+    image_url = os.getenv("IMAGE_HOST_URL")
+
+    # Return a JSON response with the saved image details
+    return {
+        "compressed_path": resized_file_location,
+        "image_url": f"{image_url}/image/compressed/{md5}"
+    }
 
 def delete_image(md5: str):
     image_list = load_image_list_from_json()
