@@ -95,7 +95,13 @@ async def process_and_save_image(file: UploadFile):
     except Exception as e:
         raise HTTPException(status_code=500, detail="Error resizing or converting the image")
 
-    return {"filename": file.filename, "md5": file_md5, "resized_location": resized_file_location}
+    # Return a JSON response with the saved image details
+    return {
+        "filename": file.filename,
+        "md5": file_md5,
+        "original_location": original_file_location,
+        "resized_location": resized_file_location
+    }
 
 def get_all_images() -> List[dict]:
     image_list = load_image_list_from_json()

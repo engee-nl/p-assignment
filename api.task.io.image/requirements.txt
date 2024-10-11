@@ -1,3 +1,4 @@
+aiofiles
 boto3   # for AWS S3 interaction
 fastapi
 pillow  # for image processing
