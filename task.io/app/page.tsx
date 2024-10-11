@@ -3,7 +3,6 @@
 import { useEffect, useState, ChangeEvent } from 'react';
 import { uploadImage, getImages, deleteImage, updateImage } from './controllers/imageController';
 import Image from 'next/image';
-import axios from 'axios';
 
 // Define the types for images and API response
 interface Image {
@@ -60,22 +59,14 @@ export default function Home() {
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
-    } catch (err:unknown) {
-      // Type guard to determine if error is an Axios error
-      if (axios.isAxiosError(err)) {
-        const errorMessage = err.response?.data?.detail || 'Upload failed';
-        const errorCode = err.response?.status || 'Unknown error';
+    } catch (err: unknown) {
+      const errorMessage = err.response?.data?.detail || 'Upload failed';
+      const errorCode = err.response?.status || 'Unknown error';
 
-        setNotification({
-          message: errorMessage,
-          errorCode: errorCode.toString(),
-        });
-      } else {
-        // Handle unexpected error types
-        setNotification({
-          message: 'An unexpected error occurred',
-        });
-      }
+      setNotification({
+        message: errorMessage,
+        errorCode: errorCode.toString(),
+      });
     } finally {
       setLoading(false);  // End loading
     }
@@ -125,9 +116,9 @@ export default function Home() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       {notification && (
-        <Notification 
-          message={notification.message} 
-          errorCode={notification.errorCode} 
+        <Notification
+          message={notification.message}
+          errorCode={notification.errorCode}
         />
       )}
       <h1 className="text-3xl font-bold text-center mb-8">Image Upload</h1>
@@ -217,29 +208,29 @@ export default function Home() {
         ))}
       </div>
 
-    {/* Modal for displaying the original image */}
-    {showModal && (
-      <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
-        <div className="relative bg-white rounded-lg p-6">
-          <button
-            className="absolute top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none shadow-lg transform translate-x-2 -translate-y-2 transition-all duration-200"
-            onClick={closeModal}
-            aria-label="Close modal"
-          >
-            <span className="text-2xl font-bold">&times;</span>
-          </button>
-          {modalImage && (
-            <Image
-              src={modalImage}
-              alt="Original Image"
-              width={800} 
-              height={800} 
-              className="w-full h-auto max-h-screen object-contain"
-            />
-          )}
+      {/* Modal for displaying the original image */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-50">
+          <div className="relative bg-white rounded-lg p-6">
+            <button
+              className="absolute top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none shadow-lg transform translate-x-2 -translate-y-2 transition-all duration-200"
+              onClick={closeModal}
+              aria-label="Close modal"
+            >
+              <span className="text-2xl font-bold">&times;</span>
+            </button>
+            {modalImage && (
+              <Image
+                src={modalImage}
+                alt="Original Image"
+                width={800}
+                height={800}
+                className="w-full h-auto max-h-screen object-contain"
+              />
+            )}
+          </div>
         </div>
-      </div>
-    )}
+      )}
 
     </div>
   );
