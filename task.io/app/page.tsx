@@ -59,7 +59,7 @@ export default function Home() {
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
-    } catch (err) {
+    } catch (err:any) {
       console.error('Error uploading image:', err);
 
       // Handle upload error
