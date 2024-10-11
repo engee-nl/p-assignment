@@ -186,7 +186,7 @@ export default function Home() {
               Delete
             </button>
 
-            <div class="h-[10px] bg-white-500"></div>
+            <div className="h-[10px] bg-white-500"></div>
 
             <button
               className="bg-blue-500 text-white rounded-md w-full px-4 py-2 hover:bg-blue-600"
@@ -195,7 +195,7 @@ export default function Home() {
               View Original
             </button>
 
-            <div class="h-[10px] bg-white-500"></div>
+            <div className="h-[10px] bg-white-500"></div>
             
             <input
               type="file"
