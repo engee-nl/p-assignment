@@ -10,17 +10,9 @@ interface Image {
   image_url: string;
 }
 
-// Represents the structure of the response object
-interface ErrorResponse {
-  data: {
-    detail: string; // Contains error details
-  };
-  status?: number; // Optional status code
-}
-
 // Define the structure of the unknown error
 interface CustomError {
-  response?: ErrorResponse; // Response may be undefined
+  detail?: string; // Response may be undefined
 }
 
 export default function Home() {
@@ -73,13 +65,12 @@ export default function Home() {
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
     } catch (err: unknown) {
-      console.error('Error handleUpload:', err);
       
       // Use type assertion to cast the unknown error to CustomError
       const customError = err as CustomError;
 
-      const errorMessage = JSON.stringify(err) || 'Upload failed'; // Accessing the message
-      const errorCode = customError.response?.status || 'Unknown error'; // Accessing the status code
+      const errorMessage = customError?.detail || 'Upload failed'; // Accessing the message
+      const errorCode = customError?.status || 'Unknown error'; // Accessing the status code
 
       setNotification({
         message: errorMessage,
