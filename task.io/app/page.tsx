@@ -204,14 +204,14 @@ export default function Home() {
               <input
                 type="number"
                 placeholder="Width"
-                value={width}
+                value={width > 0 ? width : ''}
                 onChange={(e) => setWidth(Number(e.target.value))}
                 className="border rounded p-2 w-full sm:w-1/2"
               />
               <input
                 type="number"
                 placeholder="Height"
-                value={height}
+                value={height > 0 ? height : ''}
                 onChange={(e) => setHeight(Number(e.target.value))}
                 className="border rounded p-2 w-full sm:w-1/2"
               />
