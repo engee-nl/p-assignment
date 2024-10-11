@@ -218,7 +218,7 @@ export default function Home() {
             </div>
 
             <button
-              onClick={handleUpdate}
+              onChange={(e) => handleUpdate(image.md5)}
               className="mt-2 bg-blue-500 text-white rounded p-2 w-full"
             >
               Update Dimension
