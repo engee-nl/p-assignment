@@ -25,7 +25,7 @@ export default function Home() {
   const [uploadProgress, setUploadProgress] = useState<number>(0);    // For tracking upload progress
   const [loading, setLoading] = useState<boolean>(false);             // To manage loading 
   const [showModal, setShowModal] = useState<boolean>(false);         // Modal visibility
-  const [modalImage, setModalImage] = useState<string | null>(null);  // For the image shown in the modal
+  const [modalImage, setModalImage] = useState<string>("");           // For the image shown in the modal
   const [notification, setNotification] = useState<{ message: string; errorCode?: string } | null>(null);
 
   useEffect(() => {

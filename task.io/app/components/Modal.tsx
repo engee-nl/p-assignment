@@ -5,7 +5,7 @@ import Image from 'next/image';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  originalImageUrl: string | null;
+  originalImageUrl: string;
 }
 
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, originalImageUrl }) => {
