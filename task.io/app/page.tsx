@@ -10,16 +10,10 @@ interface Image {
   image_url: string;
 }
 
-// Represents the structure of the error detail
-interface ErrorDetail {
-  message: string; // Error message
-  code?: string;   // Optional error code
-}
-
 // Represents the structure of the response object
 interface ErrorResponse {
   data: {
-    detail: ErrorDetail; // Contains error details
+    detail: string; // Contains error details
   };
   status?: number; // Optional status code
 }
