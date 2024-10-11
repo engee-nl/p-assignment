@@ -118,7 +118,7 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/images/compressed/{file_md5}.jpg"
+        "image_url": f"{image_url}/image/compressed/{file_md5}"
     }
 
     # Append new image info
@@ -131,7 +131,7 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/images/compressed/{file_md5}.jpg"
+        "image_url": f"{image_url}/image/compressed/{file_md5}"
     }
 
 def get_all_images() -> List[dict]:

@@ -14,11 +14,7 @@ class ImageUpdateResponse(BaseModel):
 class ImageDeleteResponse(BaseModel):
     message: str
 
-class ImageResolutionUpdateRequest(BaseModel):
-    width: int
-    height: int
-
 class ImageModel(BaseModel):
-    id: str
+    image_id: str
     filename: str
     url: str
