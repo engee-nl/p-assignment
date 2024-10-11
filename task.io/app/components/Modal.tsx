@@ -17,7 +17,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, originalImageUrl }) => {
       className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center transition-all duration-300 z-10`}
     >
       <div
-        className={`relative bg-white rounded-lg overflow-hidden w-11/12 h-auto`}
+        className={`relative bg-white rounded-lg overflow-hidden`}
       >
         {/* Close Button */}
         <button
@@ -36,7 +36,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, originalImageUrl }) => {
             alt="Original"
             width={undefined} // Adjust width based on fullscreen
             height={undefined} // Adjust height based on fullscreen
-            className={'w-full h-full object-cover'}
+            className={'object-cover'}
           />
         </div>
       </div>

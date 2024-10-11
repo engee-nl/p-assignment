@@ -183,7 +183,7 @@ export default function Home() {
             />
 
             <button
-              className="bg-red-500 text-white rounded-md w-full px-4 py-2"
+              className="bg-red-500 text-white rounded-md w-full px-4 py-2 hover:bg-red-600"
               onClick={() => handleDelete(image.md5)}
             >
               Delete
@@ -219,9 +219,9 @@ export default function Home() {
 
             <button
               onChange={() => handleUpdate(image.md5)}
-              className="mt-2 bg-blue-500 text-white rounded p-2 w-full"
+              className="mt-2 bg-green-500 text-white rounded p-2 w-full hover:bg-green-600"
             >
-              Update Dimension
+              Update fimension
             </button>
             
           </div>
