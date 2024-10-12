@@ -113,7 +113,14 @@ export default function Home() {
       const postData = { width: width, height: height }
 
       try {
-        await updateImageDimensions(md5, postData);
+        const response_update: AxiosResponse<ImageResponse> = await updateImageDimensions(md5, postData);
+        if (response_update && response_update.data.message) {
+          setNotification({
+            message: response_update.data.message,
+            errorCode: "",
+          });
+        }
+        
         const response = await getImages();
         setImages(response.data);
 
