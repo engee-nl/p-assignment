@@ -183,7 +183,7 @@ export default function Home() {
         {images.map((image) => (
           <div
             key={image.md5}
-            className="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg"
+            className="flex flex-col items-center bg-white p-4 rounded-lg shadow-lg relative"
           >
             <Image
               src={image.image_url}
@@ -194,7 +194,7 @@ export default function Home() {
             />
             <button
               onClick={() => openModal(image.image_url)}
-              className="absolute top-2 right-2 bg-gray-800 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75 focus:outline-none"
+              className="absolute top-[-14px] right-[-14px] top-2 right-2 bg-gray-800 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75 focus:outline-none"
               aria-label="Expand Image"
             >
               <ExpandIcon /> 
