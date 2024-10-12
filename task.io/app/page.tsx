@@ -8,6 +8,7 @@ import Notification from './components/Notification';
 import { AxiosResponse } from 'axios';
 import { CustomError, ImageResponse } from './types/responseTypes'
 import { ImageType } from './types/imageTypes'
+import ExpandIcon from './components/ExpandIcon';
 
 export default function Home() {
   const [images, setImages] = useState<ImageType[]>([]);
@@ -191,6 +192,13 @@ export default function Home() {
               height={500} // Set appropriate height
               className="w-full h-48 object-cover rounded-md mb-4"
             />
+            <button
+              onClick={() => openModal(image.image_url)}
+              className="absolute top-2 right-2 bg-gray-800 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75 focus:outline-none"
+              aria-label="Expand Image"
+            >
+              <ExpandIcon /> 
+            </button>
 
             <button
               className="bg-red-500 text-white rounded-md w-full px-4 py-2 hover:bg-red-600"
