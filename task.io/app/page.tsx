@@ -194,7 +194,7 @@ export default function Home() {
             />
             <button
               onClick={() => openModal(image.image_url)}
-              className="absolute top-[-14px] right-[-14px] top-2 right-2 bg-gray-800 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75 focus:outline-none"
+              className="absolute top-[24px] right-[24px] top-2 right-2 bg-gray-800 bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75 focus:outline-none"
               aria-label="Expand Image"
             >
               <ExpandIcon /> 

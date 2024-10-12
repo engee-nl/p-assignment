@@ -1,18 +1,19 @@
 const ExpandIcon = () => (
     <svg
-        xmlns="http://www.w3.org/2000/svg"
-        className="h-6 w-6"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-        <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 8V4a1 1 0 011-1h4M5 19h4a1 1 0 001-1v-4m10 0v4a1 1 0 01-1 1h-4m5-15h-4a1 1 0 00-1 1v4"
-        />
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 4h6M4 4v6m0-6l6 6m10-6h-6m6 0v6m0-6l-6 6m0 6h6m-6 0v6m0-6l6 6m-10-6H4m6 0v6m0-6l-6 6"
+      />
     </svg>
-);
-
-export default ExpandIcon;
+  );
+  
+  export default ExpandIcon;
+  
