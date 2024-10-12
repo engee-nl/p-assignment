@@ -1,6 +1,10 @@
-# FastAPI Image Upload and Management
+# P. Assignmet
 
-This project is a FastAPI application that allows users to upload images, resize them, and manage the images effectively. The images are processed, and their information is stored in a JSON file.
+This assignment is divided into two project, you have the back end project, which uses Python FastAPI and a front end project which uses Nextjs and React.
+
+## Server architecture
+
+![Server architecture](server-architecture.drawio.png)
 
 ## Features
 
