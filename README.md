@@ -1,6 +1,7 @@
 # P. Assignment
 
 This assignment consists of two separate projects: a back-end project built with Python FastAPI and a front-end project developed using Next.js and React. To simplify sharing, both projects have been combined into a single repository. However, following best practices, each project should ideally be stored in its own separate repository.
+A demo section is included at the end of this README. Check out the URL and try the demo.
 
 ## Server architecture
 
@@ -14,7 +15,9 @@ Currently, both projects are implemented on a single server because I don't have
 
 ![Server architecture](server-architecture.drawio.png)
 
-# Backend
+# Back-end
+
+The back-end of this project is built using Python's FastAPI framework. It handles core functionalities such as image uploads, compression, resizing, and file management. Uploaded images are processed to ensure optimal quality and storage efficiency, and the application interacts with local file storage. The back-end also supports API endpoints for image retrieval, deletion, and updating image dimensions. Additionally, it ensures the integrity of image data through MD5 hashing.
 
 ## Features
 
@@ -117,6 +120,124 @@ export const updateImageDimensions = async (md5, updateData) => {
   });
 };
 ```
+
+# Front-end
+# Overview
+
+This project is a simple image upload and management application using **Next.js** with **TypeScript** and **Tailwind CSS**. It allows users to:
+1. Upload images to the server.
+2. View a list of uploaded images.
+3. Delete and update image dimensions.
+4. Preview the original and compressed images in a modal.
+
+The frontend communicates with a backend API to manage the images. The server processes images and stores them.
+
+## Features
+
+1. **Image Upload with Progress Bar**: Upload images with a visible progress bar showing the percentage of upload completion.
+2. **Preview Images Before Upload**: Users can preview the uncompressed image before uploading it.
+3. **View, Delete, and Update**: Users can view original images in a modal, delete images, and update their dimensions (width/height).
+4. **Tailwind CSS for Styling**: The UI is styled with Tailwind CSS for a modern and responsive design.
+
+## Project Structure
+
+```bash
+.
+├── app/
+│   ├── components/
+│   │   ├── Modal.tsx         # Modal for showing full-screen images.
+│   │   ├── Notification.tsx  # Notification component for success and error messages.
+│   │   └── ExpandIcon.tsx    # Icon component for the expand (view original) button.
+│   ├── page.tsx              # Main page containing the image upload and management logic.
+│   ├── globals.css           # Global styles for Tailwind CSS.
+├── services/
+│   ├── imageService.ts       # Axios services for interacting with the backend API.
+├── public/                   # Static files (if needed).
+├── .env                      # Environment variables (API host, etc.).
+└── README.md                 # Project documentation.
+```
+
+## How to Run the Project
+
+### Prerequisites
+
+- Node.js
+- npm or yarn package manager
+
+### Installation Steps
+
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <project-directory>
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   Create a `.env` file in the root directory and add the API host.
+   ```
+   NEXT_PUBLIC_API_HOST=<your-api-host-url>
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+5. Open your browser and navigate to:
+   ```
+   http://localhost:3000
+   ```
+
+### Backend API
+
+The application communicates with a RESTful API for the following endpoints:
+
+- **`GET /images`**: Retrieve a list of all uploaded images.
+- **`POST /upload`**: Upload a new image.
+- **`DELETE /delete/{md5}`**: Delete an image based on its MD5.
+- **`PUT /update/{md5}`**: Update the dimensions of an image.
+
+## Usage
+
+### Uploading Images
+
+1. Click the "Choose File" button to select an image.
+2. Preview the image before uploading.
+3. Click the "Upload" button to upload the image.
+4. A progress bar will indicate the upload progress.
+
+### Viewing Images
+
+- Uploaded images are displayed in a list.
+- To view the original image, click the expand icon on the image to open it in a full-screen modal.
+
+### Deleting and Updating Images
+
+- To delete an image, click the "Delete" button next to the image.
+- To resize the image, input the desired dimensions (width/height) and click "Update."
+
+## Technologies Used
+
+- **Next.js**: React framework for building server-side rendered applications.
+- **TypeScript**: Strongly-typed JavaScript for better code quality and maintainability.
+- **Tailwind CSS**: Utility-first CSS framework for building responsive and modern UIs.
+- **Axios**: For making HTTP requests to the backend API.
+- **React Hooks**: For managing state and lifecycle methods in functional components.
+
+## Known Issues
+
+1. **Image Caching**: If an image is updated with new dimensions, the browser might cache the older version. To bypass this, a cache-busting query parameter is added to the image URL when updating.
+2. **Large Image Handling**: For very large images, the close button in the modal might be hidden. A margin is added to the modal in fullscreen mode to handle this issue.
+
+
+
+
+# Demo
 
 ## Contributing
 
