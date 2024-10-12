@@ -102,7 +102,7 @@ To run the FastAPI application, use the following command:
 uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload --timeout-keep-alive 180
 ```
 
-# Using Docker
+## Using Docker
 
 This project can be easily run using Docker. Follow the steps below to get started:
 
@@ -164,6 +164,10 @@ export const updateImageDimensions = async (md5, updateData) => {
 - **Uvicorn**: ASGI server for running the application
 - **Pillow**: For image processing
 - **JSON**: For storing image metadata
+
+***
+***
+***
 
 # Front-end
 
