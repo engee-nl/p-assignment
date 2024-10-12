@@ -322,7 +322,7 @@ This project can be easily run using Docker. Follow the steps below to get start
 
 ### Deleting and Updating Images
 
-- To delete an image, click the "Delete" button next to the image.
+- To delete an image, click the "Delete" button below the image.
 - To resize the image, input the desired dimensions (width/height) and click "Update dimension"
 
 ## Technologies Used
