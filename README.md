@@ -6,9 +6,9 @@ This assignment is divided into two projects: a back-end project using Python Fa
 
 If I had access to the necessary servers and time, I would set up the architecture as outlined below. This design is based on the following considerations:
 
-- Zero downtime: If the server's operating system needs an update, the load balancer can be adjusted to redirect traffic, ensuring continuous availability.
-- Faster image download speeds and caching: By leveraging AWS S3 and CloudFront (with global distribution), we can significantly improve performance.
-- Traffic distribution: Using a load balancer, along with multiple Docker containers and servers, helps evenly distribute traffic and optimize resource utilization.
+- **Zero downtime**: If the server's operating system needs an update, the load balancer can be adjusted to redirect traffic, ensuring continuous availability.
+- **Faster image download speeds and caching**: By leveraging AWS S3 and CloudFront (with global distribution), we can significantly improve performance.
+- **Traffic distribution**: Using a load balancer, along with multiple Docker containers and servers, helps evenly distribute traffic and optimize resource utilization.
 
 ![Server architecture](server-architecture.drawio.png)
 
