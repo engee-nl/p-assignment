@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Modal from './components/Modal';
 import Notification from './components/Notification';
 import { AxiosResponse } from 'axios';
-import { CustomError } from './types/responseTypes'
+import { CustomError, ImageResponse } from './types/responseTypes'
 import { ImageType } from './types/imageTypes'
 
 export default function Home() {
