@@ -10,7 +10,11 @@ If I had access to the necessary servers and time, I would set up the architectu
 - **Faster image download speeds and caching**: By leveraging AWS S3 and CloudFront (with global distribution), we can significantly improve performance.
 - **Traffic distribution**: Using a load balancer, along with multiple Docker containers and servers, helps evenly distribute traffic and optimize resource utilization. Additionally, by implementing a master-slave database configuration, we can optimize database performance. The master database handles write operations, while the slave(s) handle read operations, reducing the load on the master and improving overall efficiency for read-heavy applications.
 
+Currently, both projects are implemented on a single server because I don't have separate servers and a dedicated database available.
+
 ![Server architecture](server-architecture.drawio.png)
+
+# Backend
 
 ## Features
 
@@ -26,25 +30,35 @@ If I had access to the necessary servers and time, I would set up the architectu
 ## Project Structure
 
 ```
-my_fastapi_project/
+api.task.io.image/
 ├── app/
-│   ├── __init__.py
-│   ├── main.py
-│   ├── api.py
+│   ├── controllers/
+│   │   ├── __init__.py
+│   │   ├── image_controller.py
+│   │   └── local_image_controller.py
 │   ├── models/
 │   │   ├── __init__.py
-│   │   ├── image.py
-│   ├── routers/
+│   │   ├── database.py
+│   │   └── image_schema.py
+│   ├── services/
 │   │   ├── __init__.py
-│   │   ├── image.py
-│   ├── utils.py
+│   │   ├── image_service.py
+│   │   └── local_image_service.py
+│   ├── utils/
+│   │   ├── __init__.py
+│   │   ├── file_utils.py
+│   │   └── s3_utils.py
+│   ├── __init__.py
 │   ├── config.py
-│   ├── requirements.txt
+│   └── main.py
+├── logs/
+│   └── app.log
 ├── uploaded_images/
-├── image_info.json
+├── image_list.json
 ├── .env
 ├── Dockerfile
-└── README.md
+├── README.md
+└── requirements.txt
 ```
 
 ## Installation
