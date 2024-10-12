@@ -250,9 +250,11 @@ task.io/
 Below, you'll find a URL to demo the front-end project. Explore the application and see how it works:
 
 - **Front-End Demo**: http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:3000/
+
 Additionally, you can test the back-end functionalities using the following URL:
 
 - **Back-End Demo**: http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:8001/docs
+
 Feel free to interact with both demos to see the full capabilities of the project!
 
 ## Contributing
