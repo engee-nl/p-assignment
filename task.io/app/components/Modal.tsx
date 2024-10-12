@@ -17,15 +17,15 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, originalImageUrl }) => {
       className={`fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center transition-all duration-300 z-10`}
     >
       <div
-        className={`relative bg-white rounded-lg overflow-hidden`}
+        className={`relative bg-white rounded-lg`}
       >
         {/* Close Button */}
         <button
-          onClick={onClose}
-          className="absolute top-[-14px] right-[-14px] bg-gray-200 rounded-full p-1 shadow-md hover:bg-gray-300 focus:outline-none"
-          aria-label="Close"
+            className="absolute top-[-14px] right-[-14px] top-2 right-2 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 focus:outline-none shadow-lg transform translate-x-2 -translate-y-2 transition-all duration-200"
+            onClick={onClose}
+            aria-label="Close modal"
         >
-          <span className="text-lg">×</span>
+            <span className="text-2xl font-bold">&times;</span> {/* Using a larger × symbol */}
         </button>
 
         {/* Image Preview */}
