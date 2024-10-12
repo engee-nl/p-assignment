@@ -109,26 +109,24 @@ export default function Home() {
   };
 
   const handleUpdate = async (md5: string) => {
-    if (selectedImage) {
-      const postData = { width: width, height: height }
+    const postData = { width: width, height: height }
 
-      try {
-        const response_update: AxiosResponse<ImageResponse> = await updateImageDimensions(md5, postData);
-        if (response_update && response_update.data.message) {
-          setNotification({
-            message: response_update.data.message,
-            errorCode: "",
-          });
-        }
-        
-        const response = await getImages();
-        setImages(response.data);
-
-        setWidth(0);
-        setHeight(0);
-      } catch (err) {
-        console.error('Error updating image:', err);
+    try {
+      const response_update: AxiosResponse<ImageResponse> = await updateImageDimensions(md5, postData);
+      if (response_update && response_update.data.message) {
+        setNotification({
+          message: response_update.data.message,
+          errorCode: "",
+        });
       }
+
+      const response = await getImages();
+      setImages(response.data);
+
+      setWidth(0);
+      setHeight(0);
+    } catch (err) {
+      console.error('Error updating image:', err);
     }
   };
 
