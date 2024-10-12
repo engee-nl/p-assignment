@@ -1,6 +1,6 @@
 # P. Assignment
 
-This assignment is divided into two projects: a back-end project using Python FastAPI and a front-end project built with Next.js and React.
+This assignment consists of two separate projects: a back-end project built with Python FastAPI and a front-end project developed using Next.js and React. To simplify sharing, both projects have been combined into a single repository. However, following best practices, each project should ideally be stored in its own separate repository.
 
 ## Server architecture
 
@@ -22,7 +22,7 @@ Currently, both projects are implemented on a single server because I don't have
 - Resize images while maintaining aspect ratio
 - Store original images and compressed versions
 - Check for existing images using MD5 hash
-- Update image dimensions and URLs
+- Update image dimensions
 - Delete images from the server
 - Serve images with a timestamp
 - CORS support for cross-origin requests
@@ -65,14 +65,14 @@ api.task.io.image/
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/my_fastapi_project.git
-   cd my_fastapi_project
+   git clone https://github.com/engee-nl/p-assignment.git
+   cd api.task.io.image
    ```
 
 2. Create a virtual environment and activate it:
    ```bash
    python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scriptsctivate`
+   source venv/bin/activate
    ```
 
 3. Install the required packages:
@@ -82,8 +82,13 @@ api.task.io.image/
 
 4. Create a `.env` file with your environment variables:
    ```plaintext
-   PORT=8000
-   ALLOWED_HOSTS=*
+    AWS_ACCESS_KEY_ID=your-access-key
+    AWS_SECRET_ACCESS_KEY=your-secret-key
+    S3_BUCKET_NAME=your-bucket-name
+
+    DATABASE_URL=mysql+pymysql://username:password@localhost/dbname
+
+    IMAGE_HOST_URL=http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:8001
    ```
 
 ## Running the Application
@@ -91,22 +96,23 @@ api.task.io.image/
 To run the FastAPI application, use the following command:
 
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port $PORT --reload
+uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload --timeout-keep-alive 180
 ```
 
 ## API Endpoints
 
-- **Upload Image**: `POST /upload`
-- **Get Image**: `GET /image/compressed/{md5}`
-- **Update Image Dimensions**: `PUT /images/resize/{md5}`
-- **Delete Image**: `DELETE /images/delete/{md5}`
-- **Get All Images**: `GET /images/list`
+- **Upload Image**: `POST /image/upload`
+- **Get Image**: `GET /image/get/compressed/{md5}`
+- **Get Original Image**: `GET /image/get/original/{md5}`
+- **Update Image Dimensions**: `PUT /image/resize/{md5}`
+- **Delete Image**: `DELETE /image/delete/{md5}`
+- **Get All Images**: `GET /image/list`
 
 ## Example Request to Update Image Dimensions
 
 ```javascript
 export const updateImageDimensions = async (md5, updateData) => {
-  return axios.put(`${API_HOST}/images/resize/${md5}`, updateData, {
+  return axios.put(`${API_HOST}/image/resize/${md5}`, updateData, {
     headers: { 'Content-Type': 'application/json' },
   });
 };
