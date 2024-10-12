@@ -110,12 +110,15 @@ export default function Home() {
 
   const handleUpdate = async (md5: string) => {
     if (selectedImage) {
-      const formData = { width: 0, height: 0 }
+      const postData = { width: width, height: height }
 
       try {
-        await updateImageDimensions(md5, formData);
+        await updateImageDimensions(md5, postData);
         const response = await getImages();
         setImages(response.data);
+
+        setWidth(0);
+        setHeight(0);
       } catch (err) {
         console.error('Error updating image:', err);
       }

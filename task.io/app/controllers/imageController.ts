@@ -54,7 +54,7 @@ export const deleteImage = async (md5: string): Promise<AxiosResponse<{ message:
 // Update image
 export const updateImageDimensions = async (md5: string, updateData: { width: number; height: number }): Promise<AxiosResponse<ImageResponse>> => {
   return axios.put<ImageResponse>(
-    `${API_HOST}/images/${md5}/resize`,
+    `${API_HOST}/images/resize/${md5}`,
     updateData,
     {
       headers: { 'Content-Type': 'application/json', },
