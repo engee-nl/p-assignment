@@ -7,6 +7,7 @@ import json
 import aiofiles
 from typing import List
 from pathlib import Path
+import time
 
 UPLOAD_FOLDER = "uploaded_images"
 JSON_FILE = "image_list.json"
@@ -113,13 +114,15 @@ async def process_and_save_image(file: UploadFile):
 
     # Step 4: Save image info to JSON
     image_url = os.getenv("IMAGE_HOST_URL")
+    timestamp = int(time.time())
+    
     image_data = {
         "filename": file.filename,
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/get/compressed/{file_md5}",
-        "original_image_url": f"{image_url}/image/get/original/{file_md5}"
+        "image_url": f"{image_url}/image/get/compressed/{file_md5}?t={timestamp}",
+        "original_image_url": f"{image_url}/image/get/original/{file_md5}?t={timestamp}"
     }
 
     # Append new image info
@@ -132,8 +135,8 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/get/compressed/{file_md5}",
-        "original_image_url": f"{image_url}/image/get/original/{file_md5}"
+        "image_url": f"{image_url}/image/get/compressed/{file_md5}?t={timestamp}",
+        "original_image_url": f"{image_url}/image/get/original/{file_md5}?t={timestamp}"
     }
 
 def get_all_images() -> List[dict]:
@@ -169,6 +172,18 @@ def update_image(md5: str, new_width: int, new_height: int):
             # Save the resized image with 70% quality
             resized_file_location = f"uploaded_images/{md5}.jpg"
             resized_image.save(resized_file_location, "JPEG", quality=70)
+
+            # Modify the image entry with new dimensions and Update the JSON file
+            # Find the image entry with the specified md5
+            timestamp = int(time.time())
+            for image_entry in image_list:
+                if image_entry.get("md5") == md5:
+                    image_entry["image_url"] = f"{image_url}/image/get/compressed/{md5}?t={timestamp}"
+                    break
+            else:
+                raise HTTPException(status_code=404, detail="Image not found")
+            
+            save_image_list_to_json(image_list)
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error resizing or converting the image: {e}")
