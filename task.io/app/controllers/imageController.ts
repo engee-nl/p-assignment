@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
-import { ImageResponse } from '../types/imageTypes';
+import { ImageResponse } from '../types/responseTypes';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
