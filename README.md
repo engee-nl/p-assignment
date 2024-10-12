@@ -121,8 +121,16 @@ export const updateImageDimensions = async (md5, updateData) => {
 };
 ```
 
+## Technologies Used
+
+- **Python**: 3.8 or higher
+- **FastAPI**: For building the web API
+- **Pydantic**: For data validation and settings management
+- **Uvicorn**: ASGI server for running the application
+- **Pillow**: For image processing
+- **JSON**: For storing image metadata
+
 # Front-end
-# Overview
 
 This project is a simple image upload and management application using **Next.js** with **TypeScript** and **Tailwind CSS**. It allows users to:
 1. Upload images to the server.
@@ -134,27 +142,45 @@ The frontend communicates with a backend API to manage the images. The server pr
 
 ## Features
 
-1. **Image Upload with Progress Bar**: Upload images with a visible progress bar showing the percentage of upload completion.
-2. **Preview Images Before Upload**: Users can preview the uncompressed image before uploading it.
-3. **View, Delete, and Update**: Users can view original images in a modal, delete images, and update their dimensions (width/height).
-4. **Tailwind CSS for Styling**: The UI is styled with Tailwind CSS for a modern and responsive design.
+- **Image Upload with Progress Bar**: Upload images with a visible progress bar showing the percentage of upload completion.
+- **Preview Images Before Upload**: Users can preview the uncompressed image before uploading it.
+- **View, Delete, and Update**: Users can view original images in a modal, delete images, and update their dimensions (width/height).
+- **Tailwind CSS for Styling**: The UI is styled with Tailwind CSS for a modern and responsive design.
 
 ## Project Structure
 
 ```bash
-.
+task.io/
 ├── app/
+│   ├── api/
 │   ├── components/
-│   │   ├── Modal.tsx         # Modal for showing full-screen images.
-│   │   ├── Notification.tsx  # Notification component for success and error messages.
-│   │   └── ExpandIcon.tsx    # Icon component for the expand (view original) button.
-│   ├── page.tsx              # Main page containing the image upload and management logic.
-│   ├── globals.css           # Global styles for Tailwind CSS.
-├── services/
-│   ├── imageService.ts       # Axios services for interacting with the backend API.
-├── public/                   # Static files (if needed).
-├── .env                      # Environment variables (API host, etc.).
-└── README.md                 # Project documentation.
+│   │   ├── ExpandIcon.tsx        # Icon component for the expand (view original) button.
+│   │   ├── Modal.tsx             # Modal for showing full-screen images.
+│   │   └── Notification.tsx      # Notification component for success and error messages.
+│   ├── controllers/
+│   │   └── imageController.ts    # Controller and Axios services for interacting with the backend API.
+│   ├── fonts/
+│   │   ├── GeistMonoVF.woff
+│   │   └── GeistVF.woff
+│   ├── types/
+│   │   ├── imageTypes.ts
+│   │   └── responseTypes.ts
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── layout.tsx
+│   └── page.tsx
+├── public/                       # Static files
+├── image_list.json
+├── .env.local                    # Local environment variables (API host, etc.).
+├── .env.production               # Production environment variables (API host, etc.).
+├── .eslintrc.json
+├── .gitignore
+├── next.config.mjs
+├── package.json
+├── postcss.config.mjs
+├── README.md
+├── tailwind.config.ts
+└── tsconfig.json
 ```
 
 ## How to Run the Project
@@ -168,8 +194,8 @@ The frontend communicates with a backend API to manage the images. The server pr
 
 1. Clone the repository:
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/engee-nl/p-assignment.git
+   cd task.io
    ```
 
 2. Install dependencies:
@@ -180,7 +206,7 @@ The frontend communicates with a backend API to manage the images. The server pr
 3. Set up environment variables:
    Create a `.env` file in the root directory and add the API host.
    ```
-   NEXT_PUBLIC_API_HOST=<your-api-host-url>
+   NEXT_PUBLIC_API_HOST=http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:8001
    ```
 
 4. Run the development server:
@@ -192,15 +218,6 @@ The frontend communicates with a backend API to manage the images. The server pr
    ```
    http://localhost:3000
    ```
-
-### Backend API
-
-The application communicates with a RESTful API for the following endpoints:
-
-- **`GET /images`**: Retrieve a list of all uploaded images.
-- **`POST /upload`**: Upload a new image.
-- **`DELETE /delete/{md5}`**: Delete an image based on its MD5.
-- **`PUT /update/{md5}`**: Update the dimensions of an image.
 
 ## Usage
 
@@ -228,14 +245,6 @@ The application communicates with a RESTful API for the following endpoints:
 - **Tailwind CSS**: Utility-first CSS framework for building responsive and modern UIs.
 - **Axios**: For making HTTP requests to the backend API.
 - **React Hooks**: For managing state and lifecycle methods in functional components.
-
-## Known Issues
-
-1. **Image Caching**: If an image is updated with new dimensions, the browser might cache the older version. To bypass this, a cache-busting query parameter is added to the image URL when updating.
-2. **Large Image Handling**: For very large images, the close button in the modal might be hidden. A margin is added to the modal in fullscreen mode to handle this issue.
-
-
-
 
 # Demo
 
