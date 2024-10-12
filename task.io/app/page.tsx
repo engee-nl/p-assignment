@@ -231,7 +231,7 @@ export default function Home() {
               className="bg-blue-500 text-white rounded-md w-full px-4 py-2 hover:bg-blue-600"
               onClick={() => openModal(image.original_image_url)}
             >
-              View Original
+              View original
             </button>
 
             <div className="h-[14px] bg-white-500"></div>
