@@ -1,22 +1,12 @@
 "use client";
 
 import { useEffect, useState, ChangeEvent } from 'react';
-import { uploadImage, getImages, deleteImage, updateImage } from './controllers/imageController';
+import { uploadImage, getImages, deleteImage, updateImageDimensions } from './controllers/imageController';
 import Image from 'next/image';
 import Modal from './components/Modal';
 import Notification from './components/Notification';
-
-// Define the types for images and API response
-interface Image {
-  md5: string;
-  image_url: string;
-}
-
-// Define the structure of the unknown error
-interface CustomError {
-  detail?: string; // Response may be undefined,
-  status?: string; // Response may be undefined
-}
+import { AxiosResponse } from 'axios';
+import { CustomError } from './types/responseTypes'
 
 export default function Home() {
   const [images, setImages] = useState<Image[]>([]);
@@ -89,20 +79,26 @@ export default function Home() {
 
   const handleDelete = async (md5: string) => {
     try {
-      await deleteImage(md5);
+      const response: AxiosResponse<ImageResponse> = await deleteImage(md5);
+      if (response && response.message) {
+        setNotification({
+          message: response.message,
+          errorCode: "",
+        });
+      }
       setImages(images.filter(image => image.md5 !== md5));
     } catch (err) {
       console.error('Error deleting image:', err);
+      setNotification(null);
     }
   };
 
   const handleUpdate = async (md5: string) => {
     if (selectedImage) {
-      const formData = new FormData();
-      formData.append('image', selectedImage);
+      const formData = { width: 0, height: 0 }
 
       try {
-        await updateImage(md5, formData);
+        await updateImageDimensions(md5, formData);
         const response = await getImages();
         setImages(response.data);
       } catch (err) {
@@ -199,7 +195,7 @@ export default function Home() {
             </button>
 
             <div className="h-[14px] bg-white-500"></div>
-            
+
             <div className="flex space-x-2">
               <input
                 type="number"
@@ -221,9 +217,9 @@ export default function Home() {
               onChange={() => handleUpdate(image.md5)}
               className="mt-2 bg-green-500 text-white rounded p-2 w-full hover:bg-green-600"
             >
-              Update fimension
+              Update dimension
             </button>
-            
+
           </div>
         ))}
       </div>

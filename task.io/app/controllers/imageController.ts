@@ -1,4 +1,5 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
+import { ImageResponse } from '../types/imageTypes';
 
 const API_HOST = process.env.NEXT_PUBLIC_API_HOST;
 
@@ -46,15 +47,17 @@ export const getImages = async () => {
 };
 
 // Delete image
-export const deleteImage = async (md5: string) => {
+export const deleteImage = async (md5: string): Promise<AxiosResponse<{ message: string }>> => {
   return await axios.delete(`${API_HOST}/delete/${md5}`);
 };
 
 // Update image
-export const updateImage = async (md5: string, formData: FormData) => {
-  return await axios.put(`${API_HOST}/images/${md5}`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+export const updateImageDimensions = async (md5: string, updateData: { width: number; height: number }): Promise<AxiosResponse<ImageResponse>> => {
+  return axios.put<ImageResponse>(
+    `${API_HOST}/images/${md5}/resize`,
+    updateData,
+    {
+      headers: { 'Content-Type': 'application/json', },
+    }
+  );
 };
