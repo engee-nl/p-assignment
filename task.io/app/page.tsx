@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, ChangeEvent } from 'react';
+import { useEffect, useState, useRef, ChangeEvent } from 'react';
 import { uploadImage, getImages, deleteImage, updateImageDimensions } from './controllers/imageController';
 import Image from 'next/image';
 import Modal from './components/Modal';
