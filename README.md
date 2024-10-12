@@ -166,6 +166,17 @@ export const updateImageDimensions = async (md5, updateData) => {
 - **Pillow**: For image processing
 - **JSON**: For storing image metadata
 
+## To Do - Best practices
+
+In this section, we outline some best practices to improve the overall quality and performance of the application. Implementing these practices will enhance maintainability, scalability, and usability.
+
+### 1. Asynchronous Processing
+For resource-intensive tasks, such as image processing, consider using background jobs with libraries like Celery. This approach allows the application to respond to requests without blocking, improving user experience.
+
+### 2. Excessively use Pydantic
+Pydantic has a rich set of features to validate and transform data.
+For example; Pydantic has built-in comprehensive data processing tools like regex, enums, strings manipulation, emails validation, etc.
+
 ***
 ***
 ***
