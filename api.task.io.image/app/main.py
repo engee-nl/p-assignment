@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.controllers import image_controller, local_image_controller
 from app.models.database import init_db
-from app.config import logger  # Import logger
-from dotenv import load_dotenv  # Import to load environment variables
+from app.config import logger 
+from dotenv import load_dotenv 
 
 # Load environment variables from .env file
 load_dotenv()
@@ -15,7 +15,7 @@ app = FastAPI()
 allowed_origins = [
     "http://localhost:3000",  
     "http://127.0.0.1:3000",
-    "http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:3000",  # Example: Your production frontend domain
+    "http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:3000",
 ]
 
 # Add CORSMiddleware to allow the defined origins

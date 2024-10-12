@@ -1,6 +1,6 @@
 import os
 import hashlib
-from app.config import logger  # Import logger
+from app.config import logger
 from PIL import Image
 from fastapi import UploadFile, HTTPException
 import json
@@ -81,7 +81,6 @@ async def process_and_save_image(file: UploadFile):
         # Check if the image already exists by MD5
         image_list = load_image_list_from_json()
         if any(image['md5'] == file_md5 for image in image_list):
-        #if os.path.exists(f"uploaded_images/{file_md5}.jpg"):
             raise HTTPException(status_code=409, detail="Image already exists")
 
     except Exception as e:

@@ -102,6 +102,41 @@ To run the FastAPI application, use the following command:
 uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload --timeout-keep-alive 180
 ```
 
+# Using Docker
+
+This project can be easily run using Docker. Follow the steps below to get started:
+
+1. **Build the Docker image**:
+   Build the Docker image: Navigate to the root of the project directory (where the Dockerfile is located) and run the following command:
+
+   ```
+   docker build -t api.task.io.image .
+   ```
+
+2. **Run the Docker container**:
+   After the image is built, you can run the container using the following command:
+
+   ```
+   docker run -d --name api.task.io-container -p 8001:8001 api.task.io.image
+   ```
+
+3. **Access the application**:
+   Once the container is running, you can access the application at http://localhost:8001/docs to interact with the API documentation.
+
+4. **Stop the container**:
+   To stop the container, use the following command:
+
+   ```
+   docker stop fastapi-container
+   ```
+
+5. **Remove the container (optional)**:
+   If you want to remove the container after stopping it, run:
+
+   ```
+   docker rm fastapi-container
+   ```
+
 ## API Endpoints
 
 - **Upload Image**: `POST /image/upload`
