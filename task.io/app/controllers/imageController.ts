@@ -8,7 +8,7 @@ export const uploadImage = (formData: FormData, onUploadProgress: (progressEvent
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
-    xhr.open('POST', `${API_HOST}/upload`, true);
+    xhr.open('POST', `${API_HOST}/image/upload`, true);
 
     // Set up event listener for progress
     xhr.upload.onprogress = onUploadProgress;
@@ -43,18 +43,18 @@ export const uploadImage = async (formData: FormData) => {
 
 // Get images
 export const getImages = async () => {
-  return await axios.get(`${API_HOST}/images`);
+  return await axios.get(`${API_HOST}/image/list`);
 };
 
 // Delete image
 export const deleteImage = async (md5: string): Promise<AxiosResponse<{ message: string }>> => {
-  return await axios.delete(`${API_HOST}/delete/${md5}`);
+  return await axios.delete(`${API_HOST}/image/delete/${md5}`);
 };
 
 // Update image
 export const updateImageDimensions = async (md5: string, updateData: { width: number; height: number }): Promise<AxiosResponse<ImageResponse>> => {
   return axios.put<ImageResponse>(
-    `${API_HOST}/images/resize/${md5}`,
+    `${API_HOST}/image/resize/${md5}`,
     updateData,
     {
       headers: { 'Content-Type': 'application/json', },

@@ -5,17 +5,17 @@ from app.models.image_schema import ImageDeleteResponse, UpdateImageDimensions
 
 router = APIRouter()
 
-@router.post("/upload")
+@router.post("/image/upload")
 async def upload_image(file: UploadFile = File(...)):
     # Await the process_and_save_image function since it's an async function
     result = await process_and_save_image(file)
     return result
 
-@router.get("/images")
+@router.get("/image/list")
 def get_images():
     return get_all_images()
 
-@router.put("/update/resize/{md5}")
+@router.put("/image/resize/{md5}")
 def update_existing_image(md5: str, update_data: UpdateImageDimensions) -> ImageDeleteResponse:
     try:
         updated = update_image(md5, update_data.width, update_data.height)
@@ -26,7 +26,7 @@ def update_existing_image(md5: str, update_data: UpdateImageDimensions) -> Image
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.delete("/delete/{md5}/", response_model=ImageDeleteResponse)
+@router.delete("/image/delete/{md5}/", response_model=ImageDeleteResponse)
 def delete_existing_image(md5: str) -> ImageDeleteResponse:
     try:
         deleted = delete_image(md5)
@@ -37,13 +37,13 @@ def delete_existing_image(md5: str) -> ImageDeleteResponse:
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/image/compressed/{md5}")
+@router.get("/image/get/compressed/{md5}")
 async def get_image_from_server(md5: str):
     result = await get_image(md5, "")
     return FileResponse(result)
 
 
-@router.get("/image/original/{md5}")
+@router.get("/image/get/original/{md5}")
 async def get_original_image_from_server(md5: str):
     result = await get_image(md5, "original")
     return FileResponse(result)

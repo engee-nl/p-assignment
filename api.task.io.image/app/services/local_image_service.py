@@ -118,8 +118,8 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/compressed/{file_md5}",
-        "original_image_url": f"{image_url}/image/original/{file_md5}"
+        "image_url": f"{image_url}/image/get/compressed/{file_md5}",
+        "original_image_url": f"{image_url}/image/get/original/{file_md5}"
     }
 
     # Append new image info
@@ -132,8 +132,8 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/compressed/{file_md5}",
-        "original_image_url": f"{image_url}/image/original/{file_md5}"
+        "image_url": f"{image_url}/image/get/compressed/{file_md5}",
+        "original_image_url": f"{image_url}/image/get/original/{file_md5}"
     }
 
 def get_all_images() -> List[dict]:
@@ -179,7 +179,7 @@ def update_image(md5: str, new_width: int, new_height: int):
     # Return a JSON response with the saved image details
     return {
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/compressed/{md5}"
+        "image_url": f"{image_url}/image/get/compressed/{md5}"
     }
 
 def delete_image(md5: str):
