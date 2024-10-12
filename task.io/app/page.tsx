@@ -81,9 +81,9 @@ export default function Home() {
   const handleDelete = async (md5: string) => {
     try {
       const response: AxiosResponse<ImageResponse> = await deleteImage(md5);
-      if (response && response.message) {
+      if (response && response.data.message) {
         setNotification({
-          message: response.message,
+          message: response.data.message,
           errorCode: "",
         });
       }
