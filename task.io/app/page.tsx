@@ -240,14 +240,14 @@ export default function Home() {
               <input
                 type="number"
                 placeholder="Width"
-                value={width > 0 ? width : ''}
+                value={imageDimensions[image.md5]?.width > 0 ? imageDimensions[image.md5]?.width : ''}
                 onChange={(e) => handleDimensionChange(image.md5, 'width', Number(e.target.value))}
                 className="border rounded p-2 w-full sm:w-1/2"
               />
               <input
                 type="number"
                 placeholder="Height"
-                value={height > 0 ? height : ''}
+                value={imageDimensions[image.md5]?.height > 0 ? imageDimensions[image.md5]?.height : ''}
                 onChange={(e) => handleDimensionChange(image.md5, 'height', Number(e.target.value))}
                 className="border rounded p-2 w-full sm:w-1/2"
               />
