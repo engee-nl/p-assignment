@@ -1,11 +1,11 @@
 // app/types/responseTypes.ts
 
-interface CustomError {
+export interface CustomError {
     detail?: string; // Response may be undefined,
     status?: string; // Response may be undefined
 }
 
-interface ImageResponse {
+export interface ImageResponse {
   id?: string;
   message?: string;
   code?: string;
