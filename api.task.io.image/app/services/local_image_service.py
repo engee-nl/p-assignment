@@ -151,6 +151,7 @@ def update_image(md5: str, new_width: int, new_height: int):
         raise HTTPException(status_code=404, detail="Image not found")
     
     original_path = image_data["original_path"]
+    image_url = os.getenv("IMAGE_HOST_URL")
 
     # Resize and convert the image after saving the original
     try:
@@ -186,10 +187,8 @@ def update_image(md5: str, new_width: int, new_height: int):
             save_image_list_to_json(image_list)
 
     except Exception as e:
+        logger.error(f"Error resizing or converting the image: {e}")
         raise HTTPException(status_code=500, detail=f"Error resizing or converting the image: {e}")
-
-    # Save image info to JSON
-    image_url = os.getenv("IMAGE_HOST_URL")
 
     # Return a JSON response with the saved image details
     return {
