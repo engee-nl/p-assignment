@@ -11,7 +11,7 @@ If I had access to the necessary servers and time, I would set up the architectu
 - **Faster image download speeds and caching**: By leveraging AWS S3 and CloudFront (with global distribution), we can significantly improve performance.
 - **Traffic distribution**: Using a load balancer, along with multiple Docker containers and servers, helps evenly distribute traffic and optimize resource utilization. Additionally, by implementing a master-slave database configuration, we can optimize database performance. The master database handles write operations, while the slave(s) handle read operations, reducing the load on the master and improving overall efficiency for read-heavy applications.
 
-Currently, both projects are implemented on a single server because I don't have separate servers and a dedicated database available.
+Currently, both projects are implemented on a single server (AWS EC2 t2.micro) because I don't have separate servers and a dedicated database available.
 
 ![Server architecture](server-architecture.drawio.png)
 
