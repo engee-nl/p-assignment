@@ -1,6 +1,6 @@
 // app/types/imageTypes.ts
 
-export interface Image {
+export interface ImageType {
     md5: string;
     image_url: string;
 }

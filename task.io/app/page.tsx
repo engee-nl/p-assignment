@@ -7,9 +7,10 @@ import Modal from './components/Modal';
 import Notification from './components/Notification';
 import { AxiosResponse } from 'axios';
 import { CustomError } from './types/responseTypes'
+import { ImageType } from './types/imageTypes'
 
 export default function Home() {
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<ImageType[]>([]);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);  // For image preview
   const [uploadProgress, setUploadProgress] = useState<number>(0);    // For tracking upload progress
