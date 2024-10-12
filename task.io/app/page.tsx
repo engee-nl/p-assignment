@@ -22,6 +22,8 @@ export default function Home() {
   const [width, setWidth] = useState<number>(0);
   const [height, setHeight] = useState<number>(0);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     const fetchImages = async () => {
       try {
@@ -61,6 +63,11 @@ export default function Home() {
       setSelectedImage(null); // Reset selected image after upload
       setPreviewUrl(null);    // Reset preview after upload
       setNotification(null);  // Clear any previous notification
+
+      // Clear the file input field after successful upload
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';  // Reset the input field
+      }
     } catch (err: unknown) {
 
       // Use type assertion to cast the unknown error to CustomError
@@ -87,6 +94,12 @@ export default function Home() {
           errorCode: "",
         });
       }
+
+      // Clear the file input field after successful upload
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';  // Reset the input field
+      }
+
       setImages(images.filter(image => image.md5 !== md5));
     } catch (err) {
       console.error('Error deleting image:', err);
@@ -190,7 +203,7 @@ export default function Home() {
 
             <button
               className="bg-blue-500 text-white rounded-md w-full px-4 py-2 hover:bg-blue-600"
-              onClick={() => openModal(image.image_url)}
+              onClick={() => openModal(image.original_image_url)}
             >
               View Original
             </button>

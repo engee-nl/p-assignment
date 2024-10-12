@@ -34,3 +34,9 @@ def delete_existing_image(md5: str) -> ImageDeleteResponse:
 async def get_image_from_server(md5: str):
     result = await get_image(md5)
     return FileResponse(result)
+
+
+@router.get("/image/original/{md5}")
+async def get_original_image_from_server(md5: str):
+    result = await get_original_image(md5)
+    return FileResponse(result)

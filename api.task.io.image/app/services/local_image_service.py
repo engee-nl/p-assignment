@@ -118,7 +118,8 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/compressed/{file_md5}"
+        "image_url": f"{image_url}/image/compressed/{file_md5}",
+        "original_image_url": f"{image_url}/image/original/{file_md5}"
     }
 
     # Append new image info
@@ -131,7 +132,8 @@ async def process_and_save_image(file: UploadFile):
         "md5": file_md5,
         "original_path": original_file_location,
         "compressed_path": resized_file_location,
-        "image_url": f"{image_url}/image/compressed/{file_md5}"
+        "image_url": f"{image_url}/image/compressed/{file_md5}",
+        "original_image_url": f"{image_url}/image/original/{file_md5}"
     }
 
 def get_all_images() -> List[dict]:
@@ -202,7 +204,7 @@ def delete_image(md5: str):
 
     return {"message": "Image deleted successfully"}
 
-async def get_image(md5key: str):
+async def get_image(md5key: str, type: str):
     try:
         image_list = load_image_list_from_json()
         image_data = next((image for image in image_list if image['md5'] == md5key), None)
@@ -214,6 +216,9 @@ async def get_image(md5key: str):
 
         # Retrieve the file path from the image info
         image_path = image_data['compressed_path']
+        if type == "original":
+            image_path = image_data['original_path']
+
         logger.info(f"Image path : {image_path}")
 
         # Check if the file exists
