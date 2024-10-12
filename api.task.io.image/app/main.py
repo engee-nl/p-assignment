@@ -15,7 +15,7 @@ app = FastAPI()
 allowed_origins = [
     "http://localhost:3000",  
     "http://127.0.0.1:3000",
-    "http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:3000",
+    "http://ec2-13-125-58-42.ap-northeast-2.compute.amazonaws.com:3000",
 ]
 
 # Add CORSMiddleware to allow the defined origins

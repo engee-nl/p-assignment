@@ -91,7 +91,7 @@ api.task.io.image/
 
     DATABASE_URL=mysql+pymysql://username:password@localhost/dbname
 
-    IMAGE_HOST_URL=http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:8001
+    IMAGE_HOST_URL=http://ec2-13-125-58-42.ap-northeast-2.compute.amazonaws.com:8001
    ```
 
 ## Running the Application
@@ -245,7 +245,7 @@ task.io/
 3. Set up environment variables:
    Create a `.env` file in the root directory and add the API host.
    ```
-   NEXT_PUBLIC_API_HOST=http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:8001
+   NEXT_PUBLIC_API_HOST=http://ec2-13-125-58-42.ap-northeast-2.compute.amazonaws.com:8001
    ```
 
 4. Run the development server:
@@ -324,11 +324,11 @@ This project can be easily run using Docker. Follow the steps below to get start
 # Demo
 Below, you'll find a URL to demo the front-end project. Explore the application and see how it works:
 
-- **Front-End Demo**: http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:3000/
+- **Front-End Demo**: http://ec2-13-125-58-42.ap-northeast-2.compute.amazonaws.com:3000/
 
 Additionally, you can test the back-end functionalities using the following URL:
 
-- **Back-End Demo**: http://ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com:8001/docs
+- **Back-End Demo**: http://ec2-13-125-58-42.ap-northeast-2.compute.amazonaws.com:8001/docs
 
 Feel free to interact with both demos to see the full capabilities of the project!
 

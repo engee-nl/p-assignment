@@ -4,7 +4,7 @@ const nextConfig = {
         remotePatterns: [
         {
             protocol: 'http',
-            hostname: 'ec2-43-201-64-153.ap-northeast-2.compute.amazonaws.com', 
+            hostname: 'ec2-13-125-58-42.ap-northeast-2.compute.amazonaws.com', 
             port: '8001',
             pathname: '/image/**/**/**',
         },
