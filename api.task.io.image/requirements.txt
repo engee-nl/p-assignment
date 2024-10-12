@@ -7,3 +7,4 @@ pydantic
 python-dotenv  # for reading environment variables
 sqlalchemy  # for database ORM
 uvicorn
+python-multipart
