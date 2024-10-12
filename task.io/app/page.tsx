@@ -20,8 +20,7 @@ export default function Home() {
   const [modalImage, setModalImage] = useState<string>("");           // For the image shown in the modal
   const [notification, setNotification] = useState<{ message: string; errorCode?: string } | null>(null);
 
-  const [width, setWidth] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
+  const [imageDimensions, setImageDimensions] = useState<{ [key: string]: { width: number; height: number } }>({});
 
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -108,8 +107,19 @@ export default function Home() {
     }
   };
 
+  const handleDimensionChange = (md5: string, dimension: 'width' | 'height', value: number) => {
+    setImageDimensions((prev) => ({
+      ...prev,
+      [md5]: {
+        ...prev[md5],
+        [dimension]: value,
+      },
+    }));
+  };
+
   const handleUpdate = async (md5: string) => {
-    const postData = { width: width, height: height }
+    const dimensions = imageDimensions[md5];
+    const postData = { width: dimensions.width, height: dimensions.height }
 
     try {
       const response_update: AxiosResponse<ImageResponse> = await updateImageDimensions(md5, postData);
@@ -123,8 +133,8 @@ export default function Home() {
       const response = await getImages();
       setImages(response.data);
 
-      setWidth(0);
-      setHeight(0);
+      handleDimensionChange(md5, 'width', 0);
+      handleDimensionChange(md5, 'height', 0);
     } catch (err) {
       console.error('Error updating image:', err);
     }
@@ -231,20 +241,20 @@ export default function Home() {
                 type="number"
                 placeholder="Width"
                 value={width > 0 ? width : ''}
-                onChange={(e) => setWidth(Number(e.target.value))}
+                onChange={(e) => handleDimensionChange(image.md5, 'width', Number(e.target.value))}
                 className="border rounded p-2 w-full sm:w-1/2"
               />
               <input
                 type="number"
                 placeholder="Height"
                 value={height > 0 ? height : ''}
-                onChange={(e) => setHeight(Number(e.target.value))}
+                onChange={(e) => handleDimensionChange(image.md5, 'height', Number(e.target.value))}
                 className="border rounded p-2 w-full sm:w-1/2"
               />
             </div>
 
             <button
-              onChange={() => handleUpdate(image.md5)}
+              onClick={() => handleUpdate(image.md5)}
               className="mt-2 bg-green-500 text-white rounded p-2 w-full hover:bg-green-600"
             >
               Update dimension
